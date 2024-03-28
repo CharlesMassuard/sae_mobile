@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/mytheme.dart';
-import 'package:sae_mobile/pages/widget/prete.dart';
-import 'package:sae_mobile/pages/widget/recoit.dart';
+import 'package:sae_mobile/pages/widget/profil.dart';
+import 'package:sae_mobile/pages/widget/annonces.dart';
 
 class SAE extends StatefulWidget{
   const SAE({super.key});
@@ -21,10 +21,10 @@ class Home extends State<SAE>{
 
     switch(_currentWidget){
       case 0:
-        child = Recoit();
+        child = WidgetAnnonces();
         break;
       case 1:
-        child = Prete();
+        child = WidgetProfil();
         break;
     }
 

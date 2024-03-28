@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../mytheme.dart';
 
-class Recoit extends StatelessWidget {
-  const Recoit({super.key});
+class WidgetAnnonces extends StatelessWidget {
+  const WidgetAnnonces({super.key});
 
   @override
   Widget build(BuildContext context) {
