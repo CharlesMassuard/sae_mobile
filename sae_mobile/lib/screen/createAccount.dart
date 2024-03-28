@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class CreateAccountPage extends StatefulWidget {
+  const CreateAccountPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _CreateAccountPageState createState() => _CreateAccountPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Création de compte'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -56,20 +56,22 @@ class _LoginPageState extends State<LoginPage> {
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
                     try {
-                      final response = await Supabase.instance.client.auth.signInWithPassword(email: email, password: password);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Connexion réussie'),
-                        ));
-                        // Navigate to the home page after successful login
-                        context.go('/home');
+                      final AuthResponse response = await Supabase.instance.client.auth.signUp(email: email, password: password);
+                      final Session? session = response.session;
+                      final User? user = response.user;
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Connexion réussie'),
+                      ));
+                      // Navigate to the home page after successful login
+                      context.go('/home');
                     } catch (error) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Email ou mot de passe incorrect'),
+                        content: Text('$error'),
                       ));
                     }
-                    }
-                  },
-                  child: Text('Se connecter'),
+                  }
+                },
+                child: Text('Se connecter'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
