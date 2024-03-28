@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'screen/connexion.dart';
-import 'screen/home.dart';
-import 'screen/createAccount.dart';
+import 'pages/connexion.dart';
+import 'pages/SAE.dart';
+import 'pages/createAccount.dart';
 
 class MyAppRouter {
   static final router = GoRouter(
@@ -15,7 +14,7 @@ class MyAppRouter {
       ),
       GoRoute(
           path: '/home',
-          builder: (context, state) { return const MyApp();}
+          builder: (context, state) { return const SAE();}
       ),
       GoRoute(
           path: '/createAccount',

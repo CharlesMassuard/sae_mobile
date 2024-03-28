@@ -1,28 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sae_mobile/pages/home.dart';
-import '../mytheme.dart';
-import 'SettingViewModel.dart';
+import 'package:sae_mobile/mytheme.dart';
+import 'package:sae_mobile/pages/widget/prete.dart';
+import 'package:sae_mobile/pages/widget/recoit.dart';
 
-class MySAE extends StatelessWidget{
+class SAE extends StatefulWidget{
+  const SAE({super.key});
+
   @override
-  Widget build(BuildContext context){
-    //creation d'un provider
-    return ChangeNotifierProvider(
-      create: (_){
-        SettingViewModel settingViewModel = SettingViewModel();
-        //getSettings est deja appelee dans le constructeur
-        return settingViewModel;
-      },
-      child: Consumer<SettingViewModel>(
-        builder: (context,SettingViewModel notifier,child){
-          return MaterialApp(
-              theme: notifier.isDark ? MyTheme.dark():MyTheme.light(),
-              title: "SAE Mobile",
-              home: MainPage()
-          );
-        },
-      ),
+  Home createState()=> Home();
+}
+
+class Home extends State<SAE>{
+  Home();
+
+  int _currentWidget = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget child = Container();
+
+    switch(_currentWidget){
+      case 0:
+        child = Recoit();
+        break;
+      case 1:
+        child = Prete();
+        break;
+    }
+
+    return MaterialApp(
+        theme: MyTheme.dark(),
+        title: 'Accueil',
+        home: Scaffold(
+          appBar: AppBar(
+              title: const Text("Allo, La plateforme d'échange entre étudiants!"),
+              titleTextStyle: MyTheme.darkTextTheme.displayLarge
+          ),
+          backgroundColor: Colors.black,
+          bottomNavigationBar: _getNavBar(),
+          body: SizedBox.expand(child: child),
+        )
+    );
+  }
+
+  Widget _getNavBar(){
+    return BottomNavigationBar(
+      currentIndex: _currentWidget,
+      onTap: (int index) => setState(() => _currentWidget = index),
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.dashboard),
+          label: 'Annonces',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profil',
+        ),
+      ],
     );
   }
 }
