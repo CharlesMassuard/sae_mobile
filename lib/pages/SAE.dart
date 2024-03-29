@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sae_mobile/mytheme.dart';
 import 'package:sae_mobile/pages/widget/profil.dart';
 import 'package:sae_mobile/pages/widget/annonces.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sae_mobile/utils/screenUtil.dart';
 
 class SAE extends StatefulWidget{
   const SAE({super.key});
@@ -15,6 +16,7 @@ class Home extends State<SAE>{
   Home();
 
   int _currentWidget = 0;
+  late ScreenUtil screenUtil;
 
   Future<bool> checkLoginStatus() async {
     final user = Supabase.instance.client.auth.currentUser;
@@ -23,6 +25,7 @@ class Home extends State<SAE>{
 
   @override
   Widget build(BuildContext context) {
+    screenUtil = ScreenUtil(context);
     return FutureBuilder<bool>(
       future: checkLoginStatus(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -58,9 +61,13 @@ class Home extends State<SAE>{
         home: Scaffold(
           appBar: AppBar(
               title: const Text("Allo, La plateforme d'échange entre étudiants!"),
-              titleTextStyle: MyTheme.darkTextTheme.displayLarge
+              titleTextStyle: TextStyle(
+                fontSize: screenUtil.responsiveFontSizeLong(),
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              )
           ),
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.grey,
           bottomNavigationBar: _getNavBar(),
           body: SizedBox.expand(child: child),
         )

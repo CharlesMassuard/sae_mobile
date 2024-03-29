@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../mytheme.dart';
+import 'package:sae_mobile/mytheme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sae_mobile/utils/screenUtil.dart';
 
 class WidgetProfil extends StatefulWidget {
   const WidgetProfil({super.key});
@@ -12,6 +13,7 @@ class WidgetProfil extends StatefulWidget {
 
 class WidgetProfilState extends State<WidgetProfil> {
   String userEmail = '';
+  late ScreenUtil screenUtil;
 
   @override
   void initState() {
@@ -24,6 +26,7 @@ class WidgetProfilState extends State<WidgetProfil> {
 
   @override
   Widget build(BuildContext context) {
+    screenUtil = ScreenUtil(context);
     return MaterialApp(
       theme: MyTheme.dark(),
       title: "Profil",
@@ -34,8 +37,8 @@ class WidgetProfilState extends State<WidgetProfil> {
             children: [
               Text(
                 "Bonjour $userEmail 👋",
-                style: const TextStyle(
-                  fontSize: 30,
+                style: TextStyle(
+                  fontSize: screenUtil.responsiveFontSizeMedium(),
                   fontWeight: FontWeight.bold,
                 ),
               ),
