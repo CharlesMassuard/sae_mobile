@@ -9,15 +9,15 @@ class MyAppRouter {
     initialLocation: '/',
     routes: [
       GoRoute(
-        path: '/',
-        builder: (context, state) { return const LoginPage();}
-      ),
-      GoRoute(
-          path: '/home',
+          path: '/',
           builder: (context, state) { return const SAE();}
       ),
       GoRoute(
-          path: '/createAccount',
+          path: '/login',
+          builder: (context, state) { return const LoginPage();}
+      ),
+      GoRoute(
+          path: '/register',
           builder: (context, state) { return const CreateAccountPage();}
       ),
     ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sae_mobile/mytheme.dart';
 import 'package:sae_mobile/pages/widget/profil.dart';
 import 'package:sae_mobile/pages/widget/annonces.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SAE extends StatefulWidget{
   const SAE({super.key});
@@ -15,8 +16,31 @@ class Home extends State<SAE>{
 
   int _currentWidget = 0;
 
+  Future<bool> checkLoginStatus() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    return user != null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: checkLoginStatus(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.data == false) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            Navigator.pushReplacementNamed(context, '/login');
+          });
+          return Container();
+        } else {
+          return _buildHome(context);
+        }
+      },
+    );
+  }
+
+  Widget _buildHome(BuildContext context) {
     Widget child = Container();
 
     switch(_currentWidget){

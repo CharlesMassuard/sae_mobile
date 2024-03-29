@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../mytheme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class WidgetProfil extends StatelessWidget {
+class WidgetProfil extends StatefulWidget {
   const WidgetProfil({super.key});
+
+  @override
+  _WidgetProfilState createState() => _WidgetProfilState();
+}
+
+class _WidgetProfilState extends State<WidgetProfil> {
+  String userEmail = '';
+
+  @override
+  void initState() {
+    super.initState();
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user != null) {
+      userEmail = user.email ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +32,13 @@ class WidgetProfil extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                "C'est $userEmail qui est connecté!",
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               ConstrainedBox(
                 constraints: const BoxConstraints(
                   minWidth: 200,

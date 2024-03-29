@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                           content: Text('Connexion réussie'),
                         ));
                         // Navigate to the home page after successful login
-                        context.go('/home');
+                        context.go('/');
                     } catch (error) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Email ou mot de passe incorrect'),
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () {
                   // Naviguer vers la page de création de compte
-                  context.go('/createAccount');
+                  context.go('/register');
                 },
                 child: Text('Créer un compte'),
               ),

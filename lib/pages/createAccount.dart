@@ -63,7 +63,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         content: Text('Connexion réussie'),
                       ));
                       // Navigate to the home page after successful login
-                      context.go('/home');
+                      context.go('/');
                     } catch (error) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('$error'),
@@ -76,10 +76,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Naviguer vers la page de création de compte
-                  context.go('/createAccount');
+                  // Naviguer vers la page de login
+                  context.go('/login');
                 },
-                child: Text('Créer un compte'),
+                child: Text("J'ai déjà un compte"),
               ),
             ],
           ),
