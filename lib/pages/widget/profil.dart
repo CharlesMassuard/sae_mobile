@@ -7,10 +7,10 @@ class WidgetProfil extends StatefulWidget {
   const WidgetProfil({super.key});
 
   @override
-  _WidgetProfilState createState() => _WidgetProfilState();
+  WidgetProfilState createState() => WidgetProfilState();
 }
 
-class _WidgetProfilState extends State<WidgetProfil> {
+class WidgetProfilState extends State<WidgetProfil> {
   String userEmail = '';
 
   @override
@@ -33,12 +33,13 @@ class _WidgetProfilState extends State<WidgetProfil> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "C'est $userEmail qui est connecté!",
+                "Bonjour $userEmail 👋",
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: 20),
               ConstrainedBox(
                 constraints: const BoxConstraints(
                   minWidth: 200,
