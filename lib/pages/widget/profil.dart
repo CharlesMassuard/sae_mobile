@@ -17,23 +17,34 @@ class WidgetProfil extends StatelessWidget {
             children: [
               ConstrainedBox(
                 constraints: const BoxConstraints(
-                  minWidth: 200, // Set your minimum width
-                  minHeight: 50, // Set your minimum height
+                  minWidth: 200,
+                  minHeight: 50,
                 ),
                 child: ElevatedButton(
                   onPressed: () => context.go('/page1'),
-                  child: const Text('Test'),
+                  child: const Text('Mon profil'),
                 ),
               ),
               const SizedBox(height: 20),
               ConstrainedBox(
                 constraints: const BoxConstraints(
-                  minWidth: 200, // Set your minimum width
-                  minHeight: 50, // Set your minimum height
+                  minWidth: 200,
+                  minHeight: 50,
                 ),
                 child: ElevatedButton(
                   onPressed: () => context.go('/page2'),
-                  child: const Text('Test 2'),
+                  child: const Text('Mes objets'),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: 200,
+                  minHeight: 50,
+                ),
+                child: ElevatedButton(
+                  onPressed: () => context.go('/page3'),
+                  child: const Text('Mes prêts'),
                 ),
               ),
             ],
