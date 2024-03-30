@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sae_mobile/pages/widget/informationPopup.dart';
+import 'package:sae_mobile/utils/supabaseService.dart';
 
 class NouvelleAnnonce extends StatefulWidget {
   const NouvelleAnnonce({Key? key}) : super(key: key);
@@ -11,13 +14,23 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _description = '';
+  final SupabaseService _supabaseService = SupabaseService();
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print('Title: $_title');
-      print('Description: $_description');
-      // Here you can handle the submission of the form, for example, by sending a request to your server
+      try {
+        await _supabaseService.insertAnnouncement(_title, _description);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Annonce publiée avec succès!')),
+        );
+        context.go('/');
+      } catch (e) {
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de la publication: $e')),
+        );
+      }
     }
   }
 
@@ -25,7 +38,7 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create New Announcement'),
+        title: const Text('Créer une annonce'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,7 +50,7 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
                 decoration: const InputDecoration(labelText: 'Title'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
+                    return 'Veuillez entrer un titre';
                   }
                   return null;
                 },
@@ -46,10 +59,13 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
                 },
               ),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  suffixIcon: InfoButton(infoText: 'Veillez entrer ce que vous recherchez et expliquer brièvement votre besoin'),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Veillez entrer une description';
                   }
                   return null;
                 },
@@ -57,9 +73,10 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
                   _description = value!;
                 },
               ),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: const Text('Submit'),
+                child: const Text('Poster l\'annonce'),
               ),
             ],
           ),

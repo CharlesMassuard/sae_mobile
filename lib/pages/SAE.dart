@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sae_mobile/mytheme.dart';
 import 'package:sae_mobile/pages/widget/profil.dart';
 import 'package:sae_mobile/pages/widget/annonces.dart';
@@ -33,7 +34,7 @@ class Home extends State<SAE>{
           return const CircularProgressIndicator();
         } else if (snapshot.data == false) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            Navigator.pushReplacementNamed(context, '/login');
+            context.go('/login');
           });
           return Container();
         } else {

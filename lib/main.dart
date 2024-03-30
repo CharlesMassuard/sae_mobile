@@ -4,10 +4,6 @@ import 'router.dart';
 import 'package:sae_mobile/utils/supabaseService.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  SupabaseService supabaseService = SupabaseService();
-
   runApp(MyApp());
 }
 

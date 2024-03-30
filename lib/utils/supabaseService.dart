@@ -9,4 +9,19 @@ class SupabaseService {
   }
 
   SupabaseClient get client => Supabase.instance.client;
+
+  Future<void> insertAnnouncement(String title, String description) async {
+    try {
+      final response = await client.from('Annonces').insert({
+        'titreAnn': title,
+        'descAnn': description,
+      });
+    } catch (e) {
+      if (e is NoSuchMethodError) {
+        throw Exception('A method was called on a null object: $e');
+      } else {
+        throw Exception('An unknown error occurred: $e');
+      }
+    }
+  }
 }
