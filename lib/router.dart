@@ -1,25 +1,28 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'screen/connexion.dart';
-import 'screen/home.dart';
-import 'screen/createAccount.dart';
+import 'pages/connexion.dart';
+import 'pages/SAE.dart';
+import 'pages/createAccount.dart';
+import 'pages/nouvelleAnnonce.dart';
 
 class MyAppRouter {
   static final router = GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(
-        path: '/',
-        builder: (context, state) { return const LoginPage();}
+          path: '/',
+          builder: (context, state) { return const SAE();}
       ),
       GoRoute(
-          path: '/home',
-          builder: (context, state) { return const MyApp();}
+          path: '/login',
+          builder: (context, state) { return const LoginPage();}
       ),
       GoRoute(
-          path: '/createAccount',
+          path: '/register',
           builder: (context, state) { return const CreateAccountPage();}
+      ),
+      GoRoute(
+          path: '/nouvelleAnnonce',
+          builder: (context, state) { return const NouvelleAnnonce();}
       ),
     ],
   );

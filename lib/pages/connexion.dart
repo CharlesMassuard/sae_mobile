@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sae_mobile/utils/supabaseService.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -56,12 +57,13 @@ class _LoginPageState extends State<LoginPage> {
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
                     try {
-                      final response = await Supabase.instance.client.auth.signInWithPassword(email: email, password: password);
+                      final supabaseService = SupabaseService();
+                      final response = await supabaseService.client.auth.signInWithPassword(email: email, password: password);
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Connexion réussie'),
                         ));
                         // Navigate to the home page after successful login
-                        context.go('/home');
+                        context.go('/');
                     } catch (error) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Email ou mot de passe incorrect'),
@@ -75,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () {
                   // Naviguer vers la page de création de compte
-                  context.go('/createAccount');
+                  context.go('/register');
                 },
                 child: Text('Créer un compte'),
               ),

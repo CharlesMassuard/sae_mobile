@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sae_mobile/utils/supabaseService.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({Key? key}) : super(key: key);
@@ -56,14 +57,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
                     try {
-                      final AuthResponse response = await Supabase.instance.client.auth.signUp(email: email, password: password);
+                      final supabaseService = SupabaseService();
+                      final AuthResponse response = await supabaseService.client.auth.signUp(email: email, password: password);
                       final Session? session = response.session;
                       final User? user = response.user;
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Connexion réussie'),
+                        content: Text('Un mail de confirmation vous a été envoyé.'),
                       ));
                       // Navigate to the home page after successful login
-                      context.go('/home');
+                      context.go('/');
                     } catch (error) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('$error'),
@@ -71,15 +73,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     }
                   }
                 },
-                child: Text('Se connecter'),
+                child: Text('Créer mon compte'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Naviguer vers la page de création de compte
-                  context.go('/createAccount');
+                  // Naviguer vers la page de login
+                  context.go('/login');
                 },
-                child: Text('Créer un compte'),
+                child: Text("J'ai déjà un compte"),
               ),
             ],
           ),
