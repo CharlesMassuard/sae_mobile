@@ -78,7 +78,7 @@ class WidgetAnnonces extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(announcement.description),
-                                    Text('Owner: ${announcement.username}'), // Display the name of the owner
+                                    Text('Auteur : ${announcement.username}', style: TextStyle(fontStyle: FontStyle.italic)), // Display the name of the owner
                                   ],
                                 ),
                               ),
@@ -95,3 +95,4 @@ class WidgetAnnonces extends StatelessWidget {
     );
   }
 }
+

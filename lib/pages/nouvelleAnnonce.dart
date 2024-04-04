@@ -47,7 +47,7 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: "Titre de l'annonce"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer un titre';
