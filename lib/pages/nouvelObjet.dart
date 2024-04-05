@@ -82,13 +82,18 @@ class _NouvelObjetState extends State<NouvelObjet> {
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => context.go('/mesObjets'),
-                child: const Text("Annuler"),
-              ),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text("Créer l'objet"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => context.go('/mesObjets'),
+                    child: const Text("Annuler"),
+                  ),
+                  ElevatedButton(
+                    onPressed: _submitForm,
+                    child: const Text("Créer l'objet"),
+                  ),
+                ],
               ),
             ],
           ),

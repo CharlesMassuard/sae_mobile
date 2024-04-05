@@ -1,9 +1,9 @@
-class MesObjets {
+class Objet {
   final int id;
   String nomObjet;
   String descriptionObjet;
 
-  MesObjets({
+  Objet({
     required this.id,
     required this.nomObjet,
     required this.descriptionObjet,

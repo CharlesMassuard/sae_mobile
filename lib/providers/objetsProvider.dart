@@ -32,16 +32,16 @@ class MesObjetsProvider {
         });
   }
 
-  Future<List<MesObjets>?>? getMesObjets() async {
+  Future<List<Objet>?>? getMesObjets() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(TABLE_MES_OBJETS);
 
     if (maps.isEmpty) {
-      return [];
+      return null;
     }
 
     return List.generate(maps.length, (i) {
-      return MesObjets(
+      return Objet(
         id: maps[i]['id'],
         nomObjet: maps[i]['nomObjet'],
         descriptionObjet: maps[i]['descriptionObjet'],
@@ -49,7 +49,7 @@ class MesObjetsProvider {
     });
   }
 
-  Future<int> insert(MesObjets mesObjets) async {
+  Future<int> insert(Objet mesObjets) async {
     final db = await database;
     return await db.insert(TABLE_MES_OBJETS, mesObjets.toMap());
   }
@@ -63,7 +63,7 @@ class MesObjetsProvider {
     );
   }
 
-  Future<int> update(MesObjets mesObjets) async {
+  Future<int> update(Objet mesObjets) async {
     final db = await database;
     return await db.update(
       TABLE_MES_OBJETS,

@@ -6,7 +6,7 @@ import 'package:sae_mobile/providers/objetsProvider.dart';
 import 'package:sae_mobile/models/objets.dart';
 
 class MesObjets extends StatefulWidget {
-  const MesObjets({Key? key}) : super(key: key);
+  const MesObjets({super.key});
 
   @override
   _MesObjets createState() => _MesObjets();
@@ -53,12 +53,12 @@ class _MesObjets extends State<MesObjets> {
                   ),
                 ],
               ),
-            ),git add
+            ),
           ),
           Expanded(
-            child: FutureBuilder<List<MesObjets>?>(
+            child: FutureBuilder<List<Objet>?>(
               future: MesObjetsProvider.db.getMesObjets(),
-              builder: (BuildContext context, AsyncSnapshot<List<MesObjets>?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<List<Objet>?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SizedBox(
                     width: 200,  // Adjust the width as needed

@@ -74,13 +74,18 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => context.go('/'),
-                child: const Text('Annuler'),
-              ),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Poster l\'annonce'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => context.go('/'),
+                    child: const Text('Annuler'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _submitForm,
+                    child: const Text('Poster l\'annonce'),
+                  ),
+                ],
               ),
             ],
           ),
