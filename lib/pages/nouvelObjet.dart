@@ -1,35 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sae_mobile/pages/widget/informationPopup.dart';
-import 'package:sae_mobile/utils/supabaseService.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
-class NouvelleAnnonce extends StatefulWidget {
-  const NouvelleAnnonce({Key? key}) : super(key: key);
+class NouvelObjet extends StatefulWidget {
+  const NouvelObjet({Key? key}) : super(key: key);
 
   @override
-  _NouvelleAnnonceState createState() => _NouvelleAnnonceState();
+  _NouvelObjetState createState() => _NouvelObjetState();
 }
 
-class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
+class _NouvelObjetState extends State<NouvelObjet> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _description = '';
-  final SupabaseService _supabaseService = SupabaseService();
+
+  Future<Database> getDatabase() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'database.db'),
+      version: 1,
+    );
+  }
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        await _supabaseService.insertAnnouncement(_title, _description);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Annonce publiée avec succès!')),
+        final db = await getDatabase();
+        await db.insert(
+          'MesObjets',
+          {
+            'nomObjet': _title,
+            'descriptionObjet': _description,
+          },
         );
-        context.go('/');
+        // Navigate back to the previous page or show a success message
       } catch (e) {
-        print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors de la publication: $e')),
-        );
+        // Handle the exception. You might want to show an error message to the user
       }
     }
   }
@@ -38,7 +46,7 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Créer une annonce'),
+        title: const Text('Ajouter un objet'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -47,10 +55,10 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(labelText: "Titre de l'annonce"),
+                decoration: const InputDecoration(labelText: "Nom de l'objet"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer un titre';
+                    return 'Veuillez entrer un nom';
                   }
                   return null;
                 },
@@ -61,11 +69,11 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Description',
-                  suffixIcon: InfoButton(infoText: 'Veillez entrer ce que vous recherchez et expliquer brièvement votre besoin'),
+                  suffixIcon: InfoButton(infoText: 'Veuillez entrer une description de votre objet'),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veillez entrer une description';
+                    return 'Veuillez entrer une description';
                   }
                   return null;
                 },
@@ -75,12 +83,12 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () => context.go('/'),
-                child: const Text('Annuler'),
+                onPressed: () => context.go('/mesObjets'),
+                child: const Text("Annuler"),
               ),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: const Text('Poster l\'annonce'),
+                child: const Text("Créer l'objet"),
               ),
             ],
           ),

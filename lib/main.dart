@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'router.dart';
+import 'bdLocale.dart';
 
 Future<void> main() async {
+  initDatabase();
   runApp(MyApp());
 }
 

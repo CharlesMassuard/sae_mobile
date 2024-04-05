@@ -3,6 +3,8 @@ import 'pages/connexion.dart';
 import 'pages/SAE.dart';
 import 'pages/createAccount.dart';
 import 'pages/nouvelleAnnonce.dart';
+import 'pages/mesObjets.dart';
+import 'pages/nouvelObjet.dart';
 
 class MyAppRouter {
   static final router = GoRouter(
@@ -24,6 +26,14 @@ class MyAppRouter {
           path: '/nouvelleAnnonce',
           builder: (context, state) { return const NouvelleAnnonce();}
       ),
+      GoRoute(
+          path: '/mesObjets',
+          builder: (context, state) { return const MesObjets();}
+      ),
+      GoRoute(
+          path: '/nouvelObjet',
+          builder: (context, state) { return const NouvelObjet();}
+      )
     ],
   );
 }
