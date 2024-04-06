@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sae_mobile/providers/annoncesProv.dart';
+import 'package:sae_mobile/utils/supabaseService.dart';
 import 'router.dart';
 import 'bdLocale.dart';
 
@@ -11,10 +14,13 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: MyAppRouter.router,
-      debugShowCheckedModeBanner: false,
-      title: "SAE Mobile",
+    return ChangeNotifierProvider(
+      create: (context) => AnnouncementProvider(SupabaseService()),
+      child: MaterialApp.router(
+        routerConfig: MyAppRouter.router,
+        debugShowCheckedModeBanner: false,
+        title: "SAE Mobile",
+      ),
     );
   }
 }

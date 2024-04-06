@@ -5,14 +5,26 @@ import 'package:sae_mobile/utils/screenUtil.dart';
 import 'package:sae_mobile/mytheme.dart';
 import 'package:provider/provider.dart';
 
-class WidgetAnnonces extends StatelessWidget {
+class WidgetAnnonces extends StatefulWidget {
   const WidgetAnnonces({super.key});
+
+  @override
+  WidgetAnnoncesState createState() => WidgetAnnoncesState();
+}
+
+class WidgetAnnoncesState extends State<WidgetAnnonces> {
+  late Future<List<Announcement>> _announcementFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    final announcementProvider = Provider.of<AnnouncementProvider>(context, listen: false);
+    _announcementFuture = announcementProvider.fetchAnnouncements();
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenUtil = ScreenUtil(context);
-    final announcementProvider = Provider.of<AnnouncementProvider>(context, listen: false);
-
     return MaterialApp(
         theme: MyTheme.light(),
         title: "Annonces",
@@ -49,7 +61,7 @@ class WidgetAnnonces extends StatelessWidget {
                 ),
                 Expanded(
                   child: FutureBuilder<List<Announcement>>(
-                    future: announcementProvider.fetchAnnouncements(),
+                    future: _announcementFuture,
                     builder: (BuildContext context, AsyncSnapshot<List<Announcement>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return SizedBox(
@@ -80,6 +92,13 @@ class WidgetAnnonces extends StatelessWidget {
                                     Text(announcement.description),
                                     Text('Auteur : ${announcement.username}', style: TextStyle(fontStyle: FontStyle.italic)), // Display the name of the owner
                                   ],
+                                ),
+                                trailing: ElevatedButton(
+                                  onPressed: () {
+                                    // Navigate to the details page
+                                    context.go('/annonce/${announcement.id}');
+                                  },
+                                  child: Text('Button'),
                                 ),
                               ),
                             );

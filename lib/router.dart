@@ -1,11 +1,16 @@
 import 'package:go_router/go_router.dart';
-import 'pages/connexion.dart';
-import 'pages/SAE.dart';
-import 'pages/createAccount.dart';
-import 'pages/nouvelleAnnonce.dart';
-import 'pages/mesObjets.dart';
-import 'pages/nouvelObjet.dart';
-import 'pages/mesObjets.dart';
+import 'package:sae_mobile/pages/reponseAnnonce.dart';
+import 'package:sae_mobile/pages/connexion.dart';
+import 'package:sae_mobile/pages/SAE.dart';
+import 'package:sae_mobile/pages/createAccount.dart';
+import 'package:sae_mobile/pages/nouvelleAnnonce.dart';
+import 'package:sae_mobile/pages/connexion.dart';
+import 'package:sae_mobile/pages/SAE.dart';
+import 'package:sae_mobile/pages/createAccount.dart';
+import 'package:sae_mobile/pages/nouvelleAnnonce.dart';
+import 'package:sae_mobile/pages/mesObjets.dart';
+import 'package:sae_mobile/pages/nouvelObjet.dart';
+import 'package:sae_mobile/pages/mesObjets.dart';
 
 class MyAppRouter {
   static final router = GoRouter(
@@ -26,6 +31,10 @@ class MyAppRouter {
       GoRoute(
           path: '/nouvelleAnnonce',
           builder: (context, state) { return const NouvelleAnnonce();}
+      ),
+      GoRoute(
+        path: '/annonce/:id',
+        builder: (context, state) { return const ReponseAnnonce();}
       ),
       GoRoute(
           path: '/mesObjets',

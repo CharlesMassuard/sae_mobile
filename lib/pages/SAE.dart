@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sae_mobile/mytheme.dart';
 import 'package:sae_mobile/pages/widget/profil.dart';
 import 'package:sae_mobile/pages/widget/annonces.dart';
 import 'package:sae_mobile/utils/screenUtil.dart';
-import 'package:sae_mobile/utils/supabaseService.dart';
-import 'package:sae_mobile/providers/annoncesProv.dart';
 
 class SAE extends StatefulWidget{
   const SAE({super.key});
@@ -22,32 +19,21 @@ class Home extends State<SAE>{
   int _currentWidget = 0;
   late ScreenUtil screenUtil;
 
-  Future<bool> checkLoginStatus() async {
-    final user = Supabase.instance.client.auth.currentUser;
-    return user != null;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        context.go('/login');
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     screenUtil = ScreenUtil(context);
-    return FutureBuilder<bool>(
-      future: checkLoginStatus(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.data == false) {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
-            context.go('/login');
-          });
-          return Container();
-        } else {
-          return ChangeNotifierProvider(
-            create: (context) => AnnouncementProvider(SupabaseService()),
-            child: _buildHome(context),
-          );
-        }
-      },
-    );
+    return _buildHome(context);
   }
 
   Widget _buildHome(BuildContext context) {
