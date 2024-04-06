@@ -1,34 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sae_mobile/pages/widget/informationPopup.dart';
-import 'package:sae_mobile/utils/supabaseService.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
-class NouvelleAnnonce extends StatefulWidget {
-  const NouvelleAnnonce({Key? key}) : super(key: key);
+class NouvelObjet extends StatefulWidget {
+  const NouvelObjet({Key? key}) : super(key: key);
 
   @override
-  _NouvelleAnnonceState createState() => _NouvelleAnnonceState();
+  _NouvelObjetState createState() => _NouvelObjetState();
 }
 
-class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
+class _NouvelObjetState extends State<NouvelObjet> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _description = '';
-  final SupabaseService _supabaseService = SupabaseService();
 
-  void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      try {
-        await _supabaseService.insertAnnouncement(_title, _description);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Annonce publiée avec succès!')),
+  Future<Database> getDatabase() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'database.db'),
+      version: 1,
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE MesObjets(id INTEGER PRIMARY KEY, nomObjet TEXT, descriptionObjet TEXT)",
         );
-        context.go('/');
+      },
+    );
+  }
+
+  void _submitForm(BuildContext context) async {
+    print('Submit form called');
+    if (_formKey.currentState!.validate()) {
+      print('Form is valid');
+      _formKey.currentState!.save();
+      print('Form saved');
+      try {
+        final db = await getDatabase();
+        print('Database opened');
+        await db.insert('MesObjets', {
+          'nomObjet': _title,
+          'descriptionObjet': _description,
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Objet ajouté avec succès!')),
+        );
+        context.go('/mesObjets');
       } catch (e) {
         print(e);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors de la publication: $e')),
+          SnackBar(content: Text('Erreur lors de l\'ajout: $e')),
         );
       }
     }
@@ -38,7 +58,7 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Créer une annonce'),
+        title: const Text('Ajouter un objet'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -47,10 +67,10 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(labelText: "Titre de l'annonce"),
+                decoration: const InputDecoration(labelText: "Nom de l'objet"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer un titre';
+                    return 'Veuillez entrer un nom';
                   }
                   return null;
                 },
@@ -61,11 +81,11 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Description',
-                  suffixIcon: InfoButton(infoText: 'Veillez entrer ce que vous recherchez et expliquer brièvement votre besoin'),
+                  suffixIcon: InfoButton(infoText: 'Veuillez entrer une description de votre objet'),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veillez entrer une description';
+                    return 'Veuillez entrer une description';
                   }
                   return null;
                 },
@@ -78,12 +98,12 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () => context.go('/'),
-                    child: const Text('Annuler'),
+                    onPressed: () => context.go('/mesObjets'),
+                    child: const Text("Annuler"),
                   ),
                   ElevatedButton(
-                    onPressed: _submitForm,
-                    child: const Text('Poster l\'annonce'),
+                    onPressed: () => _submitForm(context),
+                    child: const Text("Créer l'objet"),
                   ),
                 ],
               ),

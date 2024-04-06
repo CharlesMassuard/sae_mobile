@@ -90,7 +90,7 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(announcement.description),
-                                    Text('Owner: ${announcement.username}'), // Display the name of the owner
+                                    Text('Auteur : ${announcement.username}', style: TextStyle(fontStyle: FontStyle.italic)), // Display the name of the owner
                                   ],
                                 ),
                                 trailing: ElevatedButton(
@@ -114,3 +114,4 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
     );
   }
 }
+
