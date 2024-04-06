@@ -3,7 +3,8 @@ import 'router.dart';
 import 'bdLocale.dart';
 
 Future<void> main() async {
-  initDatabase();
+  WidgetsFlutterBinding.ensureInitialized();
+  await initDatabase();
   runApp(MyApp());
 }
 

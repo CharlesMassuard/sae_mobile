@@ -20,6 +20,11 @@ class _NouvelObjetState extends State<NouvelObjet> {
     return openDatabase(
       join(await getDatabasesPath(), 'database.db'),
       version: 1,
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE MesObjets(id INTEGER PRIMARY KEY, nomObjet TEXT, descriptionObjet TEXT)",
+        );
+      },
     );
   }
 
@@ -28,16 +33,14 @@ class _NouvelObjetState extends State<NouvelObjet> {
       _formKey.currentState!.save();
       try {
         final db = await getDatabase();
-        await db.insert(
-          'MesObjets',
-          {
-            'nomObjet': _title,
-            'descriptionObjet': _description,
-          },
-        );
+        await db.insert('MesObjets', {
+          'nomObjet': _title,
+          'descriptionObjet': _description,
+        });
         // Navigate back to the previous page or show a success message
       } catch (e) {
         // Handle the exception. You might want to show an error message to the user
+        print(e);
       }
     }
   }

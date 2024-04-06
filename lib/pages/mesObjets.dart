@@ -57,7 +57,9 @@ class _MesObjets extends State<MesObjets> {
           ),
           Expanded(
             child: FutureBuilder<List<Objet>?>(
-              future: MesObjetsProvider.db.getMesObjets(),
+              future: MesObjetsProvider.db.getMesObjets()?.catchError((error) {
+              print('Error getting objects: $error');
+            }),
               builder: (BuildContext context, AsyncSnapshot<List<Objet>?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SizedBox(
@@ -73,8 +75,9 @@ class _MesObjets extends State<MesObjets> {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
+                    print('Objects returned: ${snapshot.data}');
                     return ListView.builder(
-                      itemCount: snapshot.data!.length,
+                      itemCount: snapshot.data?.length ?? 0,
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
                           child: ListTile(

@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 Future<void> initDatabase() async {
   // Open the database
-  final database = openDatabase(
+  final database = await openDatabase(
     join(await getDatabasesPath(), 'database.db'),
     onCreate: (db, version) async {
       // Run the CREATE TABLE statement on the database.
@@ -12,6 +12,9 @@ Future<void> initDatabase() async {
         'CREATE TABLE MesObjets (id INTEGER PRIMARY KEY AUTOINCREMENT, nomObjet TEXT, descriptionObjet TEXT)',
       );
     },
-    version: 1,
+    version: 2,
   );
+
+  // Close the database
+  await database.close();
 }
