@@ -21,7 +21,6 @@ class AnnouncementProvider with ChangeNotifier {
   Future<List<Announcement>> fetchAnnouncements() async {
     try {
       final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username');
-      print("Hi chat");
       _announcements = res.map((item) {
         return Announcement(
           id: item['idAnn'],

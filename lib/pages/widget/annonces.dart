@@ -6,13 +6,13 @@ import 'package:sae_mobile/mytheme.dart';
 import 'package:provider/provider.dart';
 
 class WidgetAnnonces extends StatefulWidget {
-  const WidgetAnnonces({Key? key}) : super(key: key);
+  const WidgetAnnonces({super.key});
 
   @override
-  _WidgetAnnoncesState createState() => _WidgetAnnoncesState();
+  WidgetAnnoncesState createState() => WidgetAnnoncesState();
 }
 
-class _WidgetAnnoncesState extends State<WidgetAnnonces> {
+class WidgetAnnoncesState extends State<WidgetAnnonces> {
   late Future<List<Announcement>> _announcementFuture;
 
   @override
