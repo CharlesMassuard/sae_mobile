@@ -73,18 +73,24 @@ class _MesObjets extends State<MesObjets> {
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    print('Objects returned: ${snapshot.data}');
-                    return ListView.builder(
-                      itemCount: snapshot.data?.length ?? 0,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(snapshot.data![index].nomObjet),
-                            subtitle: Text(snapshot.data![index].descriptionObjet),
-                          ),
-                        );
-                      },
-                    );
+                    if (snapshot.data == null || snapshot.data!.isEmpty) {
+                      return const Center(
+                        child: Text('Ajouter un objet!'),
+                      );
+                    } else {
+                      print('Objects returned: ${snapshot.data}');
+                      return ListView.builder(
+                        itemCount: snapshot.data?.length ?? 0,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(snapshot.data![index].nomObjet),
+                              subtitle: Text(snapshot.data![index].descriptionObjet),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   }
                 }
               },
