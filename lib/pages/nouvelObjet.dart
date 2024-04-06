@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sae_mobile/pages/widget/informationPopup.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sae_mobile/bdLocale.dart';
 
 class NouvelObjet extends StatefulWidget {
   const NouvelObjet({Key? key}) : super(key: key);
@@ -16,27 +17,19 @@ class _NouvelObjetState extends State<NouvelObjet> {
   String _title = '';
   String _description = '';
 
-  Future<Database> getDatabase() async {
-    return openDatabase(
-      join(await getDatabasesPath(), 'database.db'),
-      version: 1,
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE MesObjets(id INTEGER PRIMARY KEY, nomObjet TEXT, descriptionObjet TEXT)",
-        );
-      },
-    );
-  }
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        final db = await getDatabase();
+        final db = await openDatabase("database.db");
         await db.insert('MesObjets', {
           'nomObjet': _title,
           'descriptionObjet': _description,
         });
+        //afficher la bd
+        final List<Map<String, dynamic>> maps = await db.query('MesObjets');
+        print(maps);
         // Navigate back to the previous page or show a success message
       } catch (e) {
         // Handle the exception. You might want to show an error message to the user

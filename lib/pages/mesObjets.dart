@@ -57,9 +57,7 @@ class _MesObjets extends State<MesObjets> {
           ),
           Expanded(
             child: FutureBuilder<List<Objet>?>(
-              future: MesObjetsProvider.db.getMesObjets()?.catchError((error) {
-              print('Error getting objects: $error');
-            }),
+              future: MesObjetsProvider().getMesObjets(),
               builder: (BuildContext context, AsyncSnapshot<List<Objet>?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SizedBox(

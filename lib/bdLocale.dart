@@ -12,9 +12,6 @@ Future<void> initDatabase() async {
         'CREATE TABLE MesObjets (id INTEGER PRIMARY KEY AUTOINCREMENT, nomObjet TEXT, descriptionObjet TEXT)',
       );
     },
-    version: 2,
+    version: 1,
   );
-
-  // Close the database
-  await database.close();
 }
