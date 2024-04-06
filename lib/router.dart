@@ -1,8 +1,9 @@
 import 'package:go_router/go_router.dart';
-import 'pages/connexion.dart';
-import 'pages/SAE.dart';
-import 'pages/createAccount.dart';
-import 'pages/nouvelleAnnonce.dart';
+import 'package:sae_mobile/pages/reponseAnnonce.dart';
+import 'package:sae_mobile/pages/connexion.dart';
+import 'package:sae_mobile/pages/SAE.dart';
+import 'package:sae_mobile/pages/createAccount.dart';
+import 'package:sae_mobile/pages/nouvelleAnnonce.dart';
 
 class MyAppRouter {
   static final router = GoRouter(
@@ -24,6 +25,10 @@ class MyAppRouter {
           path: '/nouvelleAnnonce',
           builder: (context, state) { return const NouvelleAnnonce();}
       ),
+      GoRoute(
+        path: '/annonce/:id',
+        builder: (context, state) { return const ReponseAnnonce();}
+      )
     ],
   );
 }
