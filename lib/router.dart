@@ -5,6 +5,7 @@ import 'pages/createAccount.dart';
 import 'pages/nouvelleAnnonce.dart';
 import 'pages/mesObjets.dart';
 import 'pages/nouvelObjet.dart';
+import 'pages/mesObjets.dart';
 
 class MyAppRouter {
   static final router = GoRouter(
