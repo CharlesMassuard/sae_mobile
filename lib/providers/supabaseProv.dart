@@ -93,4 +93,8 @@ class supabaseProvider with ChangeNotifier {
       throw Exception('An error occurred while fetching object: $e');
     }
   }
+
+
+
+
 }

@@ -131,6 +131,10 @@ class SupabaseService {
   Future<void> refuseObjet(int idObjet, int idAnnonce) async {
     try {
       final response = await client.from('ReponseAnnonce').delete().eq('idObjetRep', idObjet).eq('idAnnRep', idAnnonce);
+      final response2 = await client.from('ReponseAnnonce').count().eq('idAnnRep', idAnnonce);
+      if (response2 == 0) {
+        final response3 = await client.from('Annonces').update({'statusAnn': 'posted'}).eq('idAnn', idAnnonce);
+      }
     } catch (e) {
       if (e is NoSuchMethodError) {
         throw Exception('A method was called on a null object: $e');
