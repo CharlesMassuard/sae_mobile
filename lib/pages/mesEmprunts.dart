@@ -4,6 +4,7 @@ import 'package:sae_mobile/utils/screenUtil.dart';
 import 'package:sae_mobile/providers/supabaseProv.dart';
 import 'package:sae_mobile/models/pret.dart';
 import 'package:provider/provider.dart';
+import 'package:sae_mobile/utils/screenUtil.dart';
 
 class MesEmprunts extends StatefulWidget {
   const MesEmprunts({super.key});
@@ -15,6 +16,7 @@ class MesEmprunts extends StatefulWidget {
 
 class _MesEmprunts extends State<MesEmprunts> {
   final _formKey = GlobalKey<FormState>();
+  late ScreenUtil screenUtil;
   late Future<List<Pret>> _pretFuture;
 
   @override
@@ -22,6 +24,7 @@ class _MesEmprunts extends State<MesEmprunts> {
     super.initState();
     final pretProvider = Provider.of<supabaseProvider>(context, listen: false);
     _pretFuture = pretProvider.fetchPrets();
+    screenUtil = ScreenUtil(context);
   }
 
   @override
@@ -90,7 +93,7 @@ class _MesEmprunts extends State<MesEmprunts> {
 
                                     });
                                   },
-                                  child: const Text("Marquer l'emprunt comme terminé"),
+                                  child: Text("Marquer l'emprunt comme terminé", style: TextStyle(fontSize: screenUtil.responsiveFontSizeVeryLong())),
                                 )
                             ),
                           );

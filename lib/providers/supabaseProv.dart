@@ -102,12 +102,12 @@ class supabaseProvider with ChangeNotifier {
         throw Exception('Vous n\'êtes pas connecté.');
       }
       final res = await _supabaseService.client.from('Pret')
-          .select('id, Annonce: idAnnPret (*), Objet: idObjPret (*), enCours')
-          .eq('idAnnPret(username)', username);
+          .select('id, Annonces: idAnnPret (*), Objets: idObjPret (*), enCours')
+          .eq('Annonces.username', username);
 
       return res.map((item) {
-        final annonce = item['Annonce'];
-        final objet = item['Objet'];
+        final annonce = item['Annonces'];
+        final objet = item['Objets'];
         return Pret(
           id: item['id'],
           enCours: item['enCours'],
