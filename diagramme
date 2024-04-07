@@ -1,0 +1,299 @@
+@startuml
+set namespaceSeparator ::
+
+class "sae_mobile::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sae_mobile::main.dart::MyApp"
+
+class "sae_mobile::models::annoncesModel.dart::Announcement" {
+  +int id
+  +String title
+  +String description
+  +String username
+  +String status
+  +String date
+}
+
+class "sae_mobile::models::objets.dart::Objet" {
+  +int id
+  +String nomObjet
+  +String descriptionObjet
+  +String usernameOwner
+  +Map<String, dynamic> toMap()
+  +String toString()
+}
+
+class "sae_mobile::mytheme.dart::MyTheme" {
+  {static} +TextTheme lightTextTheme
+  {static} +TextTheme darkTextTheme
+  {static} +ThemeData light()
+  {static} +ThemeData dark()
+}
+
+"sae_mobile::mytheme.dart::MyTheme" o-- "flutter::src::material::text_theme.dart::TextTheme"
+
+class "sae_mobile::pages::connexion.dart::LoginPage" {
+  +_LoginPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::connexion.dart::LoginPage"
+
+class "sae_mobile::pages::connexion.dart::_LoginPageState" {
+  -TextEditingController _emailController
+  -TextEditingController _passwordController
+  -GlobalKey<FormState> _formKey
+  +Widget build()
+}
+
+"sae_mobile::pages::connexion.dart::_LoginPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"sae_mobile::pages::connexion.dart::_LoginPageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::connexion.dart::_LoginPageState"
+
+class "sae_mobile::pages::createAccount.dart::CreateAccountPage" {
+  +_CreateAccountPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::createAccount.dart::CreateAccountPage"
+
+class "sae_mobile::pages::createAccount.dart::_CreateAccountPageState" {
+  -TextEditingController _emailController
+  -TextEditingController _passwordController
+  -GlobalKey<FormState> _formKey
+  +Widget build()
+}
+
+"sae_mobile::pages::createAccount.dart::_CreateAccountPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"sae_mobile::pages::createAccount.dart::_CreateAccountPageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::createAccount.dart::_CreateAccountPageState"
+
+class "sae_mobile::pages::mesObjets.dart::MesObjets" {
+  +_MesObjets createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::mesObjets.dart::MesObjets"
+
+class "sae_mobile::pages::mesObjets.dart::_MesObjets" {
+  -GlobalKey<FormState> _formKey
+  +Widget build()
+}
+
+"sae_mobile::pages::mesObjets.dart::_MesObjets" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::mesObjets.dart::_MesObjets"
+
+class "sae_mobile::pages::nouvelleAnnonce.dart::NouvelleAnnonce" {
+  +_NouvelleAnnonceState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::nouvelleAnnonce.dart::NouvelleAnnonce"
+
+class "sae_mobile::pages::nouvelleAnnonce.dart::_NouvelleAnnonceState" {
+  -GlobalKey<FormState> _formKey
+  -String _title
+  -String _description
+  -String _date
+  -SupabaseService _supabaseService
+  -void _submitForm()
+  +Widget build()
+}
+
+"sae_mobile::pages::nouvelleAnnonce.dart::_NouvelleAnnonceState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"sae_mobile::pages::nouvelleAnnonce.dart::_NouvelleAnnonceState" o-- "sae_mobile::utils::supabaseService.dart::SupabaseService"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::nouvelleAnnonce.dart::_NouvelleAnnonceState"
+
+class "sae_mobile::pages::nouvelObjet.dart::NouvelObjet" {
+  +_NouvelObjetState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::nouvelObjet.dart::NouvelObjet"
+
+class "sae_mobile::pages::nouvelObjet.dart::_NouvelObjetState" {
+  -GlobalKey<FormState> _formKey
+  -String _title
+  -String _description
+  +dynamic getDatabase()
+  -void _submitForm()
+  +Widget build()
+}
+
+"sae_mobile::pages::nouvelObjet.dart::_NouvelObjetState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::nouvelObjet.dart::_NouvelObjetState"
+
+class "sae_mobile::pages::propositionsObjets.dart::PropositionsObjets" {
+  +PropositionsObjetsState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::propositionsObjets.dart::PropositionsObjets"
+
+class "sae_mobile::pages::propositionsObjets.dart::PropositionsObjetsState" {
+  -dynamic _objetsFuture
+  +supabaseProvider announcementProvider
+  +List<Objet> listObjet
+  +SupabaseService supabaseService
+  +Objet? dropdownValue
+  +void initState()
+  +void loadObjets()
+  +Widget build()
+}
+
+"sae_mobile::pages::propositionsObjets.dart::PropositionsObjetsState" o-- "sae_mobile::providers::supabaseProv.dart::supabaseProvider"
+"sae_mobile::pages::propositionsObjets.dart::PropositionsObjetsState" o-- "sae_mobile::utils::supabaseService.dart::SupabaseService"
+"sae_mobile::pages::propositionsObjets.dart::PropositionsObjetsState" o-- "sae_mobile::models::objets.dart::Objet"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::propositionsObjets.dart::PropositionsObjetsState"
+
+class "sae_mobile::pages::reponseAnnonce.dart::ReponseAnnonce" {
+  +ReponseAnnonceState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::reponseAnnonce.dart::ReponseAnnonce"
+
+class "sae_mobile::pages::reponseAnnonce.dart::ReponseAnnonceState" {
+  -dynamic _announcementFuture
+  +supabaseProvider announcementProvider
+  +List<Objet> listObjet
+  +SupabaseService supabaseService
+  +Objet? dropdownValue
+  +void initState()
+  +void loadObjets()
+  +Widget build()
+}
+
+"sae_mobile::pages::reponseAnnonce.dart::ReponseAnnonceState" o-- "sae_mobile::providers::supabaseProv.dart::supabaseProvider"
+"sae_mobile::pages::reponseAnnonce.dart::ReponseAnnonceState" o-- "sae_mobile::utils::supabaseService.dart::SupabaseService"
+"sae_mobile::pages::reponseAnnonce.dart::ReponseAnnonceState" o-- "sae_mobile::models::objets.dart::Objet"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::reponseAnnonce.dart::ReponseAnnonceState"
+
+class "sae_mobile::pages::reponsesRecues.dart::ReponsesRecues" {
+  +ReponsesRecuesState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::reponsesRecues.dart::ReponsesRecues"
+
+class "sae_mobile::pages::reponsesRecues.dart::ReponsesRecuesState" {
+  -dynamic _announcementFuture
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::reponsesRecues.dart::ReponsesRecuesState"
+
+class "sae_mobile::pages::SAE.dart::SAE" {
+  +Home createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::SAE.dart::SAE"
+
+class "sae_mobile::pages::SAE.dart::Home" {
+  -int _currentWidget
+  +ScreenUtil screenUtil
+  +void initState()
+  +Widget build()
+  -Widget _buildHome()
+  -Widget _getNavBar()
+}
+
+"sae_mobile::pages::SAE.dart::Home" o-- "sae_mobile::utils::screenUtil.dart::ScreenUtil"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::SAE.dart::Home"
+
+class "sae_mobile::pages::widget::annonces.dart::WidgetAnnonces" {
+  +WidgetAnnoncesState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::widget::annonces.dart::WidgetAnnonces"
+
+class "sae_mobile::pages::widget::annonces.dart::WidgetAnnoncesState" {
+  -dynamic _announcementFuture
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::widget::annonces.dart::WidgetAnnoncesState"
+
+class "sae_mobile::pages::widget::informationPopup.dart::InfoButton" {
+  +String infoText
+  +InfoButtonState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::widget::informationPopup.dart::InfoButton"
+
+class "sae_mobile::pages::widget::informationPopup.dart::InfoButtonState" {
+  -bool _isDialogOpen
+  -void _toggleInfoDialog()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::widget::informationPopup.dart::InfoButtonState"
+
+class "sae_mobile::pages::widget::profil.dart::WidgetProfil" {
+  +WidgetProfilState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sae_mobile::pages::widget::profil.dart::WidgetProfil"
+
+class "sae_mobile::pages::widget::profil.dart::WidgetProfilState" {
+  +String userEmail
+  +ScreenUtil screenUtil
+  +void initState()
+  +Widget build()
+}
+
+"sae_mobile::pages::widget::profil.dart::WidgetProfilState" o-- "sae_mobile::utils::screenUtil.dart::ScreenUtil"
+"flutter::src::widgets::framework.dart::State" <|-- "sae_mobile::pages::widget::profil.dart::WidgetProfilState"
+
+class "sae_mobile::providers::objetsProvider.dart::MesObjetsProvider" {
+  +dynamic db
+  +dynamic getMesObjets()
+  +dynamic removeObjet()
+  +dynamic removeALlObjets()
+}
+
+class "sae_mobile::providers::supabaseProv.dart::supabaseProvider" {
+  -List<Announcement> _announcements
+  -List<Objet> _objets
+  -SupabaseService _supabaseService
+  +List<Announcement> announcements
+  +dynamic fetchAnnouncements()
+  +dynamic fetchAnnouncement()
+  +dynamic fetchMyAnnouncements()
+  +dynamic fetchObjetAnnonce()
+}
+
+"sae_mobile::providers::supabaseProv.dart::supabaseProvider" o-- "sae_mobile::utils::supabaseService.dart::SupabaseService"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "sae_mobile::providers::supabaseProv.dart::supabaseProvider"
+
+class "sae_mobile::router.dart::MyAppRouter" {
+  {static} +GoRouter router
+}
+
+"sae_mobile::router.dart::MyAppRouter" o-- "go_router::src::router.dart::GoRouter"
+
+class "sae_mobile::utils::screenUtil.dart::ScreenUtil" {
+  +BuildContext context
+  +double screenWidth
+  +double responsiveFontSizeShort()
+  +double responsiveFontSizeMedium()
+  +double responsiveFontSizeLong()
+  +double responsiveFontSizeVeryLong()
+}
+
+"sae_mobile::utils::screenUtil.dart::ScreenUtil" o-- "flutter::src::widgets::framework.dart::BuildContext"
+
+class "sae_mobile::utils::supabaseService.dart::SupabaseService" {
+  {static} -SupabaseService _instance
+  +SupabaseClient client
+  +dynamic getUsernameFromEmail()
+  +dynamic insertAnnouncement()
+  +dynamic insertObjet()
+  +dynamic objetExist()
+  +dynamic reponseAnnonce()
+  +dynamic updateAnnonce()
+  +dynamic refuseObjet()
+  +dynamic acceptObjet()
+}
+
+"sae_mobile::utils::supabaseService.dart::SupabaseService" o-- "sae_mobile::utils::supabaseService.dart::SupabaseService"
+"sae_mobile::utils::supabaseService.dart::SupabaseService" o-- "supabase::src::supabase_client.dart::SupabaseClient"
+
+
+@enduml
