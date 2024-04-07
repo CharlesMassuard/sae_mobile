@@ -206,39 +206,42 @@ class supabaseProvider with ChangeNotifier {
     }
   }
 
-  Future<AvisPersonne?> fetchAvisPersonne(String username) async {
+  Future<List<AvisPersonne>> fetchAvisPersonne(String username) async {
     try {
-      final res = await _supabaseService.client.from('AvisPersonne')
-          .select('idAvis, userWriter, userReviewed, done, avis')
+      final res = await _supabaseService.client.from('AvisUtilisateur')
+          .select('id, userWriter, userReviewed, done, avis')
           .eq('userReviewed', username);
-      if(res.isEmpty) {
-        return null;
-      }
-      return AvisPersonne(
-        id: res[0]['id'],
-        userWriter: res[0]['userWriter'],
-        userReviewed: res[0]['userReviewed'],
-        done: res[0]['done'],
-        avis: res[0]['avis'],
-      );
+      return res.map((item) {
+        return AvisPersonne(
+          id: item['id'],
+          userWriter: item['userWriter'] ?? '',
+          userReviewed: item['userReviewed'] ?? '',
+          done: item['done'] ?? false,
+          avis: item['avis'] ?? '',
+        );
+      }).toList();
     } catch (e) {
       throw Exception('An error occurred while fetching avis: $e');
     }
   }
 
-  Future<AvisObjet> fetchAvisObjet(String username) async {
+  Future<List<AvisObjet>> fetchAvisObjet(String username) async {
     try{
       final res = await _supabaseService.client.from('AvisObjet')
-          .select('idAvis, Objets: idObjetReview (*), userWriter, done, avis')
-          .eq('Objets.usernameOwner', username);
-      return AvisObjet(
-        id: res[0]['id'],
-        idObjetReview: res[0]['idObjetReview'],
-        nomObjet: res[0]['nomObjet'],
-        userWriter: res[0]['userWriter'],
-        done: res[0]['done'],
-        avis: res[0]['avis'],
-      );
+          .select('id, idObjetReview, Objets: idObjetReview (nomObjet, usernameOwner), userWriter, done, avis')
+          .filter('Objets.usernameOwner', 'eq', username);
+      return res.map((item) {
+        final obj = item['Objets'];
+        return AvisObjet(
+          id: item['id'],
+          idObjetReview: item['idObjetReview'] ?? '',
+          nomObjet: obj != null ? obj['nomObjet'] : '',
+          usernameOwner: obj != null ? obj['usernameOwner'] : '',
+          userWriter: item['userWriter'] ?? '',
+          done: item['done'] ?? false,
+          avis: item['avis'] ?? '',
+        );
+      }).toList();
     } catch (e) {
       throw Exception('An error occurred while fetching avis: $e');
     }
