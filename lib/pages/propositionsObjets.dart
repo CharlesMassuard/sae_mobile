@@ -7,6 +7,7 @@ import 'package:sae_mobile/utils/screenUtil.dart';
 import 'package:sae_mobile/utils/supabaseService.dart';
 import 'package:sae_mobile/providers/objetsProvider.dart';
 import 'package:sae_mobile/models/objets.dart';
+import 'package:sae_mobile/pages/widget/informationPopup.dart';
 
 import '../models/annoncesModel.dart';
 
@@ -53,6 +54,15 @@ class PropositionsObjetsState extends State<PropositionsObjets> {
         home: Scaffold(
           appBar: AppBar(
             title: const Text('Objets proposés'),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => context.go('/reponsesRecues'),
+            ),
+            actions: const [
+              InfoButton(
+                infoText: 'Ici, vous pouvez voir les objets proposés par les autres utilisateurs pour votre annonce. \nAttention, accepter un objet refusera automatiquement les autres propositions.',
+              ),
+            ],
           ),
           body: FutureBuilder<List<Objet>>(
             future: _objetsFuture,
@@ -80,15 +90,17 @@ class PropositionsObjetsState extends State<PropositionsObjets> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ElevatedButton(
-                            onPressed: () {
-
+                            onPressed: () async {
+                              await supabaseService.refuseObjet(objet.id, id);
+                              setState(() {});
                             },
                             child: Text('Refuser', style: TextStyle(fontSize: screenUtil.responsiveFontSizeVeryLong())),
                           ),
                           const SizedBox(width: 5),
                           ElevatedButton(
-                            onPressed: () {
-
+                            onPressed: () async {
+                              await supabaseService.acceptObjet(objet.id, id);
+                              context.go('/reponsesRecues');
                             },
                             child: Text('Accepter', style: TextStyle(fontSize: screenUtil.responsiveFontSizeVeryLong())),
                           ),
