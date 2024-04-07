@@ -1,17 +1,29 @@
-# sae_mobile
+# SAE Mobile
 
-A new Flutter project.
+LUDMANN Dorian
+MASSUARD Charles
 
-## Getting Started
+## Présentation du projet
 
-This project is a starting point for a Flutter application.
+Pour cette SAE, nous avons du réaliser une application en flutter. Cette application propose aux utilisateurs de créer des annonces, afin de chercher un objet. Les utilisateurs peuvent répondre aux annonces avec les objets qu'ils ont importés dans leur profil.
 
-A few resources to get you started if this is your first Flutter project:
+## Fonctionnalités réalisées
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Création d'un compte, avec le mail et un mot de passe
+- Création d'une annonce : Titre, description et dates.
+- L'utilisateur peut voir les annonces qu'il a crée, ainsi que si il a ou non reçu des réponses.
+- Visualisation des annonces sur la page d'accueil. Les annonces sont affichées de la plus récente à la plus ancienne.
+- Visualisation plus complète d'une annonce en cliquant dessus. 
+- Un utilisateur peut répondre à une annonce, en séléctionnant dans un menu déroulant l'objet qu'il souhaite préter.
+- Un utilisateur peut voir les réponses à son ou ses annonces, et accepter ou non la proposition.
+- L'utilisateur peut voir ses prets et ses emprunts en cours.
+- L'utilisateur peut voir les objets qu'il a importé dans son profil.
+- L'utilisateur peut ajouter un objet à son profil (titre, description), et le supprimer.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-  
+## Technologies utilisées
+
+Afin de réaliser cette SAÉ, nous avons utilisé Flutter.
+La base de données locale est réalisée avec **sqflite** :
+    - Les objets de l'utilisateur sont stockés localement.
+La base de données distante est réalisée avec **Supabase**.
+Afin de naviguer au sein de l'application, nous avons utilisé **GoRouter**.
