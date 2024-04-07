@@ -121,7 +121,8 @@ class ReponseAnnonceState extends State<ReponseAnnonce> {
                               else{
                                 String nomObjet = dropdownValue?.nomObjet ?? 'Valeur par défaut';
                                 String descriptionObjet = dropdownValue?.descriptionObjet ?? 'Valeur par défaut';
-                                int idObj = await supabaseService.insertObjet(nomObjet, descriptionObjet);
+                                int idObjetLocal = dropdownValue?.id ?? -1;
+                                int idObj = await supabaseService.insertObjet(nomObjet, descriptionObjet, idObjetLocal);
                                 supabaseService.reponseAnnonce(idAnn, idObj);
                                 SnackBar snackBar = const SnackBar(
                                   content: Text('Objet prêté avec succès'),
