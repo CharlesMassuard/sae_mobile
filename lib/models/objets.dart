@@ -16,4 +16,9 @@ class Objet {
       'descriptionObjet': descriptionObjet,
     };
   }
+
+  @override
+  String toString() {
+    return this.nomObjet;
+  }
 }

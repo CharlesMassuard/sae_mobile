@@ -104,7 +104,7 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                                     // Navigate to the details page
                                     context.go('/annonce/${announcement.id}');
                                   },
-                                  child: Text('Button'),
+                                  child: Text('Voir plus'),
                                 ),
                               ),
                             );
