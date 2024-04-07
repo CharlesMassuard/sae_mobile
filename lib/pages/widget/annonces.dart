@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sae_mobile/providers/annoncesProv.dart';
+import 'package:sae_mobile/providers/supabaseProv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sae_mobile/utils/screenUtil.dart';
 import 'package:sae_mobile/mytheme.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/annoncesModel.dart';
 
 class WidgetAnnonces extends StatefulWidget {
   const WidgetAnnonces({super.key});
@@ -18,7 +20,7 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
   @override
   void initState() {
     super.initState();
-    final announcementProvider = Provider.of<AnnouncementProvider>(context, listen: false);
+    final announcementProvider = Provider.of<supabaseProvider>(context, listen: false);
     _announcementFuture = announcementProvider.fetchAnnouncements();
   }
 

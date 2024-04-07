@@ -85,6 +85,14 @@ class _MesObjets extends State<MesObjets> {
                             child: ListTile(
                               title: Text(snapshot.data![index].nomObjet),
                               subtitle: Text(snapshot.data![index].descriptionObjet),
+                                trailing: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      MesObjetsProvider().removeObjet(snapshot.data![index].id);
+                                    });
+                                  },
+                                  child: const Text('X'),
+                                )
                             ),
                           );
                         },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sae_mobile/pages/widget/informationPopup.dart';
+import 'package:sae_mobile/providers/supabaseProv.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -40,6 +41,7 @@ class _NouvelObjetState extends State<NouvelObjet> {
         await db.insert('MesObjets', {
           'nomObjet': _title,
           'descriptionObjet': _description,
+          'usernameOwner': 'self',
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Objet ajouté avec succès!')),

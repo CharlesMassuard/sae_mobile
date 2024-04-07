@@ -1,22 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:sae_mobile/utils/supabaseService.dart';
 
-class Announcement {
-  final int id;
-  final String title;
-  final String description;
-  final String username;
-  final String status;
-  final String date;
+import '../models/objets.dart';
+import '../models/annoncesModel.dart';
 
-  Announcement({required this.title, required this.description, required this.username, required this.id, required this.status, required this.date});
-}
-
-class AnnouncementProvider with ChangeNotifier {
+class supabaseProvider with ChangeNotifier {
   List<Announcement> _announcements = [];
+  List<Objet> _objets = [];
   final SupabaseService _supabaseService;
 
-  AnnouncementProvider(this._supabaseService);
+  supabaseProvider(this._supabaseService);
 
   List<Announcement> get announcements => _announcements;
 
@@ -78,6 +71,26 @@ class AnnouncementProvider with ChangeNotifier {
       return _announcements;
     } catch (e) {
       throw Exception('An error occurred while fetching announcements: $e');
+    }
+  }
+
+  Future<List<Objet>> fetchObjetAnnonce(int id) async {
+    try {
+      final res = await _supabaseService.client.from('ReponseAnnonce')
+          .select('Objets: idObjetRep (*)')
+          .eq('idAnnRep', id);
+
+      return res.map((item) {
+        final objet = item['Objets'];
+        return Objet(
+          id: objet['idObjet'],
+          nomObjet: objet['nomObjet'],
+          descriptionObjet: objet['descriptionObjet'],
+          usernameOwner: objet['usernameOwner'],
+        );
+      }).toList();
+    } catch (e) {
+      throw Exception('An error occurred while fetching object: $e');
     }
   }
 }

@@ -36,4 +36,14 @@ class ScreenUtil {
       return 20;
     }
   }
+
+  double responsiveFontSizeVeryLong() {
+    if (screenWidth < 350) {
+      return 5;
+    } else if (screenWidth < 600) {
+      return 10;
+    } else {
+      return 15;
+    }
+  }
 }

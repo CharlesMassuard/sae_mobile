@@ -13,7 +13,20 @@ class MesObjetsProvider {
         id: maps[i]['id'],
         nomObjet: maps[i]['nomObjet'],
         descriptionObjet: maps[i]['descriptionObjet'],
+        usernameOwner: maps[i]['usernameOwner'],
       );
+    });
+  }
+
+  removeObjet(int id) {
+    db.then((db) {
+      db.delete('MesObjets', where: 'id = ?', whereArgs: [id]);
+    });
+  }
+
+  removeALlObjets() {
+    db.then((db) {
+      db.delete('MesObjets');
     });
   }
 }

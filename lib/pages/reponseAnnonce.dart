@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sae_mobile/providers/annoncesProv.dart';
+import 'package:sae_mobile/providers/supabaseProv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sae_mobile/mytheme.dart';
@@ -7,6 +7,8 @@ import 'package:sae_mobile/utils/screenUtil.dart';
 import 'package:sae_mobile/utils/supabaseService.dart';
 import 'package:sae_mobile/providers/objetsProvider.dart';
 import 'package:sae_mobile/models/objets.dart';
+
+import '../models/annoncesModel.dart';
 
 class ReponseAnnonce extends StatefulWidget {
   const ReponseAnnonce({super.key});
@@ -17,7 +19,7 @@ class ReponseAnnonce extends StatefulWidget {
 
 class ReponseAnnonceState extends State<ReponseAnnonce> {
   late Future<Announcement> _announcementFuture;
-  late AnnouncementProvider announcementProvider;
+  late supabaseProvider announcementProvider;
   late List<Objet> listObjet;
   late SupabaseService supabaseService;
   Objet? dropdownValue;
@@ -27,7 +29,7 @@ class ReponseAnnonceState extends State<ReponseAnnonce> {
     super.initState();
     loadObjets();
     supabaseService = SupabaseService();
-    announcementProvider = Provider.of<AnnouncementProvider>(context, listen: false);
+    announcementProvider = Provider.of<supabaseProvider>(context, listen: false);
     final uri = GoRouter.of(context).routeInformationProvider.value.uri;
     final id = int.parse(uri.pathSegments.last);
     _announcementFuture = announcementProvider.fetchAnnouncement(id);
@@ -43,7 +45,7 @@ class ReponseAnnonceState extends State<ReponseAnnonce> {
     final uri = GoRouter.of(context).routeInformationProvider.value.uri;
     final idAnn = int.parse(uri.pathSegments.last);
     final screenUtil = ScreenUtil(context);
-    _announcementFuture = Provider.of<AnnouncementProvider>(context, listen: false).fetchAnnouncement(idAnn);
+    _announcementFuture = Provider.of<supabaseProvider>(context, listen: false).fetchAnnouncement(idAnn);
     return MaterialApp(
       theme: MyTheme.dark(), // Use MyTheme.dark() for the dark theme
       home: Scaffold(

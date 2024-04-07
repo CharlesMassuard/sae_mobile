@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../models/annoncesModel.dart';
 import '../mytheme.dart';
-import '../providers/annoncesProv.dart';
+import '../providers/supabaseProv.dart';
 import '../utils/screenUtil.dart';
 
 class ReponsesRecues extends StatefulWidget {
@@ -18,7 +19,7 @@ class ReponsesRecuesState extends State<ReponsesRecues> {
   @override
   void initState() {
     super.initState();
-    final announcementProvider = Provider.of<AnnouncementProvider>(context, listen: false);
+    final announcementProvider = Provider.of<supabaseProvider>(context, listen: false);
     _announcementFuture = announcementProvider.fetchMyAnnouncements();
   }
 
@@ -114,8 +115,7 @@ class ReponsesRecuesState extends State<ReponsesRecues> {
                                 ),
                                 trailing: announcement.status == 'answered' ? ElevatedButton(
                                   onPressed: () {
-                                    // Navigate to the details page
-                                    context.go('/annonce/${announcement.id}');
+                                    context.go('/propositionsObjets/${announcement.id}');
                                   },
                                   child: Text('Voir les réponses', style: TextStyle(fontSize: screenUtil.responsiveFontSizeLong())),
                                 )
