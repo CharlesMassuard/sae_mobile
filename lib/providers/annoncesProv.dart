@@ -22,7 +22,7 @@ class AnnouncementProvider with ChangeNotifier {
 
   Future<List<Announcement>> fetchAnnouncements() async {
     try {
-      final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username, statusAnn, date').order('idAnn', ascending: false);
+      final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username, statusAnn, date').or('statusAnn.eq.posted,statusAnn.eq.answered').order('idAnn', ascending: false);
       _announcements = res.map((item) {
         return Announcement(
           id: item['idAnn'],
