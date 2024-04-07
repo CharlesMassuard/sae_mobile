@@ -61,8 +61,8 @@ class WidgetProfilState extends State<WidgetProfil> {
                         minHeight: 50,
                       ),
                       child: ElevatedButton(
-                        onPressed: () => context.go('/avisRecus'),
-                        child: const Text('Avis Reçus'),
+                        onPressed: () => context.go('/page1'),
+                        child: const Text('Mon profil'),
                       ),
                     ),
                     const SizedBox(height: 20),
