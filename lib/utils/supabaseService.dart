@@ -81,6 +81,19 @@ class SupabaseService {
         'idAnnRep': idAnnonce,
         'idObjetRep': idObjet,
       });
+      updateAnnonce(idAnnonce);
+    } catch (e) {
+      if (e is NoSuchMethodError) {
+        throw Exception('A method was called on a null object: $e');
+      } else {
+        throw Exception('An unknown error occurred: $e');
+      }
+    }
+  }
+
+  Future<void> updateAnnonce(int idAnnonce) async {
+    try {
+      final response = await client.from('Annonces').update({'statusAnn': 'answered'}).eq('idAnn', idAnnonce);
     } catch (e) {
       if (e is NoSuchMethodError) {
         throw Exception('A method was called on a null object: $e');
