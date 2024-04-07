@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sae_mobile/utils/supabaseService.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class CreateAccountPage extends StatefulWidget {
+  const CreateAccountPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _CreateAccountPageState createState() => _CreateAccountPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -17,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Création de compte'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -54,30 +56,32 @@ class _LoginPageState extends State<LoginPage> {
                   if (_formKey.currentState!.validate()) {
                     final email = _emailController.text.trim();
                     final password = _passwordController.text.trim();
-                    final response = await Supabase.instance.client.auth.signInWithPassword(email: email, password: password);
+                    try {
+                      final supabaseService = SupabaseService();
+                      final AuthResponse response = await supabaseService.client.auth.signUp(email: email, password: password);
+                      final Session? session = response.session;
+                      final User? user = response.user;
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Login successful'),
+                        content: Text('Un mail de confirmation vous a été envoyé.'),
                       ));
                       // Navigate to the home page after successful login
-                      Navigator.pushReplacementNamed(context, '/home');
+                      context.go('/');
+                    } catch (error) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('$error'),
+                      ));
                     }
-                  },
-                  child: Text('Login'),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  // ... Reste du code ...
+                  }
                 },
-                child: Text('Se connecter'),
+                child: Text('Créer mon compte'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Naviguer vers la page de création de compte
-                  Navigator.pushNamed(context, '/createAccount');
+                  // Naviguer vers la page de login
+                  context.go('/login');
                 },
-                child: Text('Créer un compte'),
+                child: Text("J'ai déjà un compte"),
               ),
             ],
           ),
