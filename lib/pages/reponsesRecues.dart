@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:sae_mobile/providers/supabaseProv.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sae_mobile/utils/screenUtil.dart';
-import 'package:sae_mobile/mytheme.dart';
 import 'package:provider/provider.dart';
+import '../models/annoncesModel.dart';
+import '../mytheme.dart';
+import '../providers/supabaseProv.dart';
+import '../utils/screenUtil.dart';
 
-import '../../models/annoncesModel.dart';
-
-class WidgetAnnonces extends StatefulWidget {
-  const WidgetAnnonces({super.key});
+class ReponsesRecues extends StatefulWidget {
+  const ReponsesRecues({super.key});
 
   @override
-  WidgetAnnoncesState createState() => WidgetAnnoncesState();
+  ReponsesRecuesState createState() => ReponsesRecuesState();
 }
 
-class WidgetAnnoncesState extends State<WidgetAnnonces> {
+class ReponsesRecuesState extends State<ReponsesRecues> {
   late Future<List<Announcement>> _announcementFuture;
 
   @override
   void initState() {
     super.initState();
     final announcementProvider = Provider.of<supabaseProvider>(context, listen: false);
-    _announcementFuture = announcementProvider.fetchAnnouncements();
+    _announcementFuture = announcementProvider.fetchMyAnnouncements();
   }
 
   @override
@@ -29,7 +28,7 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
     final screenUtil = ScreenUtil(context);
     return MaterialApp(
         theme: MyTheme.light(),
-        title: "Annonces",
+        title: "Mes annonces",
         home: Scaffold(
             body: Column(
               children: [
@@ -40,13 +39,14 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Annonces",
+                          "Mes annonces!",
                           style: TextStyle(
                             fontSize: screenUtil.responsiveFontSizeShort(),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 10), // You can adjust this value to your liking
+                        const SizedBox(width: 10),
+                        // You can adjust this value to your liking
                         ElevatedButton(
                           onPressed: () => context.go('/nouvelleAnnonce'),
                           child: Text(
@@ -64,24 +64,29 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                 Expanded(
                   child: FutureBuilder<List<Announcement>>(
                     future: _announcementFuture,
-                    builder: (BuildContext context, AsyncSnapshot<List<Announcement>> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<Announcement>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return SizedBox(
-                          width: 200,  // Adjust the width as needed
+                          width: 200, // Adjust the width as needed
                           height: 200, // Adjust the height as needed
                           child: Center(
                             child: CircularProgressIndicator(
-                              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue), // Adjust the color as needed
-                              backgroundColor: Colors.grey[200], // Adjust the color as needed
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                  Colors.blue),
+                              // Adjust the color as needed
+                              backgroundColor: Colors.grey[200],
+                              // Adjust the color as needed
                               strokeWidth: 5, // Adjust the stroke width as needed
                             ),
                           ),
                         );
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                      } else
+                      if (snapshot.data == null || snapshot.data!.isEmpty) {
                         return const Center(
-                          child: Text('Ajouter une annonce!'),
+                          child: Text('Vous n\'avez pas d\'annonce!'),
                         );
                       }
                       else {
@@ -90,24 +95,31 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                           itemBuilder: (context, index) {
                             final announcement = snapshot.data![index];
                             return Container(
-                              color: Colors.blueGrey[50], // Set the background color of the ListTile
+                              color: Colors.blueGrey[50],
+                              // Set the background color of the ListTile
                               child: ListTile(
                                 title: Text(announcement.title),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(announcement.description),
-                                    Text('Date : ${announcement.date}', style: TextStyle(fontStyle: FontStyle.italic)), // Display the date of the announcement
-                                    Text('Auteur : ${announcement.username}', style: TextStyle(fontStyle: FontStyle.italic)), // Display the name of the owner
+                                    Text('Date : ${announcement.date}',
+                                        style: const TextStyle(
+                                            fontStyle: FontStyle.italic)),
+                                    // Display the date of the announcement
+                                    Text('Auteur : ${announcement.username}',
+                                        style: const TextStyle(
+                                            fontStyle: FontStyle.italic)),
+                                    // Display the name of the owner
                                   ],
                                 ),
-                                trailing: ElevatedButton(
+                                trailing: announcement.status == 'answered' ? ElevatedButton(
                                   onPressed: () {
-                                    // Navigate to the details page
-                                    context.go('/annonce/${announcement.id}');
+                                    context.go('/propositionsObjets/${announcement.id}');
                                   },
-                                  child: Text('Voir plus'),
-                                ),
+                                  child: Text('Voir les réponses', style: TextStyle(fontSize: screenUtil.responsiveFontSizeLong())),
+                                )
+                                : Text('Pas de réponse', style: TextStyle(fontSize: screenUtil.responsiveFontSizeLong()))
                               ),
                             );
                           },
@@ -116,10 +128,15 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                     },
                   ),
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/');
+                  },
+                  child: const Text('Retour'),
+                ),
               ],
             )
         )
     );
   }
 }
-

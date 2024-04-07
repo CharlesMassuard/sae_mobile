@@ -77,7 +77,6 @@ class _MesObjets extends State<MesObjets> {
                         child: Text('Ajouter un objet!'),
                       );
                     } else {
-                      print('Objects returned: ${snapshot.data}');
                       return ListView.builder(
                         itemCount: snapshot.data?.length ?? 0,
                         itemBuilder: (BuildContext context, int index) {
@@ -85,6 +84,14 @@ class _MesObjets extends State<MesObjets> {
                             child: ListTile(
                               title: Text(snapshot.data![index].nomObjet),
                               subtitle: Text(snapshot.data![index].descriptionObjet),
+                                trailing: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      MesObjetsProvider().removeObjet(snapshot.data![index].id);
+                                    });
+                                  },
+                                  child: const Text('X'),
+                                )
                             ),
                           );
                         },

@@ -50,7 +50,11 @@ class SupabaseService {
     }
   }
 
-  Future<int> insertObjet(String nom, String description) async {
+  Future<int> insertObjet(String nom, String description, int idBDLocale) async {
+    int returnedId = await objetExist(idBDLocale);
+    if (returnedId != -1) {
+      return returnedId;
+    }
     try {
       final userMail = client.auth.currentUser?.email;
       if (userMail == null) {
@@ -61,6 +65,7 @@ class SupabaseService {
         'nomObjet': nom,
         'descriptionObjet': description,
         'usernameOwner': username,
+        'idObjetBDLocal': idBDLocale,
       }).select('idObjet');
       if (response.isNotEmpty) {
         return response[0]['idObjet'];
@@ -69,6 +74,23 @@ class SupabaseService {
       }
     }
     catch (e) {
+      if (e is NoSuchMethodError) {
+        throw Exception('A method was called on a null object: $e');
+      } else {
+        throw Exception('An unknown error occurred: $e');
+      }
+    }
+  }
+
+  Future<int> objetExist(int idBDLocale) async {
+    try {
+      final response = await client.from('Objets').select().eq('idObjetBDLocal', idBDLocale);
+      if (response.isNotEmpty) {
+        return response[0]['idObjet'];
+      } else {
+        return -1;
+      }
+    } catch (e) {
       if (e is NoSuchMethodError) {
         throw Exception('A method was called on a null object: $e');
       } else {

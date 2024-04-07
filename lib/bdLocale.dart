@@ -9,7 +9,7 @@ Future<void> initDatabase() async {
     onCreate: (db, version) async {
       // Run the CREATE TABLE statement on the database.
       await db.execute(
-        'CREATE TABLE MesObjets (id INTEGER PRIMARY KEY AUTOINCREMENT, nomObjet TEXT, descriptionObjet TEXT)',
+        'CREATE TABLE MesObjets (id INTEGER PRIMARY KEY AUTOINCREMENT, nomObjet TEXT, descriptionObjet TEXT, usernameOwner TEXT)',
       );
     },
     version: 1,
