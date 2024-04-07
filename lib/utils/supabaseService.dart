@@ -47,4 +47,42 @@ class SupabaseService {
       }
     }
   }
+
+  Future<int> insertObjet(String nom, String description) async {
+    try {
+      final userMail = client.auth.currentUser?.email;
+      if (userMail == null) {
+        throw Exception('No user is currently logged in');
+      }
+      final username = await getUsernameFromEmail();
+      final response = await client.from('Objets').insert({
+        'nomObjet': nom,
+        'descriptionObjet': description,
+        'usernameOwner': username,
+      });
+      return response.data![0]['idObjet'];
+    }
+    catch (e) {
+      if (e is NoSuchMethodError) {
+        throw Exception('A method was called on a null object: $e');
+      } else {
+        throw Exception('An unknown error occurred: $e');
+      }
+    }
+  }
+
+  Future<void> reponseAnnonce(int idAnnonce, int idObjet) async {
+    try {
+      final response = await client.from('ReponseAnnonce').insert({
+        'idAnnRep': idAnnonce,
+        'idObjetRep': idObjet,
+      });
+    } catch (e) {
+      if (e is NoSuchMethodError) {
+        throw Exception('A method was called on a null object: $e');
+      } else {
+        throw Exception('An unknown error occurred: $e');
+      }
+    }
+  }
 }
