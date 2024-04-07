@@ -14,6 +14,7 @@ import 'package:sae_mobile/pages/mesObjets.dart';
 import 'package:sae_mobile/pages/reponsesRecues.dart';
 import 'package:sae_mobile/pages/propositionsObjets.dart';
 import 'package:sae_mobile/pages/mesPrets.dart';
+import 'package:sae_mobile/pages/mesEmprunts.dart';
 
 class MyAppRouter {
   static final router = GoRouter(
@@ -58,6 +59,10 @@ class MyAppRouter {
       GoRoute(
           path: '/mesPrets',
           builder: (context, state) { return const MesPrets();}
+      ),
+      GoRoute(
+        path: '/mesEmprunts',
+        builder: (context, state) { return const MesEmprunts();}
       )
     ],
   );

@@ -105,7 +105,7 @@ class WidgetProfilState extends State<WidgetProfil> {
                         minHeight: 50,
                       ),
                       child: ElevatedButton(
-                        onPressed: () => context.go('/page3'),
+                        onPressed: () => context.go('/mesEmprunts'),
                         child: const Text('Mes emprunts'),
                       ),
                     ),
