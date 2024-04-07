@@ -1,10 +1,8 @@
-import 'dart:ffi';
-
 class AvisPersonne{
-  String id;
+  int id;
   String userWriter;
   String userReviewed;
-  Bool done;
+  bool done;
   String avis;
 
   AvisPersonne({required this.id, required this.userWriter, required this.userReviewed, required this.done, required this.avis});
@@ -21,20 +19,22 @@ class AvisPersonne{
 }
 
 class AvisObjet{
-  String id;
-  String idObjetReview;
+  int id;
+  int idObjetReview;
   String nomObjet;
+  String usernameOwner;
   String userWriter;
-  Bool done;
+  bool done;
   String avis;
 
-  AvisObjet({required this.id, required this.idObjetReview, required this.nomObjet, required this.userWriter, required this.done, required this.avis});
+  AvisObjet({required this.id, required this.idObjetReview, required this.nomObjet, required this.usernameOwner, required this.userWriter, required this.done, required this.avis});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'idObjetReview': idObjetReview,
       'nomObjet': nomObjet,
+      'usernameOwner': usernameOwner,
       'userWriter': userWriter,
       'done': done,
       'avis': avis,

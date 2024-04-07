@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:sae_mobile/pages/avis.dart';
 import 'package:sae_mobile/pages/reponseAnnonce.dart';
 import 'package:sae_mobile/pages/connexion.dart';
 import 'package:sae_mobile/pages/SAE.dart';
@@ -63,6 +64,10 @@ class MyAppRouter {
       GoRoute(
         path: '/mesEmprunts',
         builder: (context, state) { return const MesEmprunts();}
+      ),
+      GoRoute(
+        path: '/avis',
+        builder: (context, state) { return const AvisList();}
       )
     ],
   );
