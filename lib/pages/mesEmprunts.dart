@@ -5,26 +5,31 @@ import 'package:sae_mobile/providers/supabaseProv.dart';
 import 'package:sae_mobile/models/pret.dart';
 import 'package:provider/provider.dart';
 import 'package:sae_mobile/utils/screenUtil.dart';
+import 'package:sae_mobile/utils/supabaseService.dart';
 
 class MesEmprunts extends StatefulWidget {
   const MesEmprunts({super.key});
 
 
   @override
-  _MesEmprunts createState() => _MesEmprunts();
+  _MesEmpruntsState createState() => _MesEmpruntsState();
 }
 
-class _MesEmprunts extends State<MesEmprunts> {
+class _MesEmpruntsState extends State<MesEmprunts> {
   final _formKey = GlobalKey<FormState>();
   late ScreenUtil screenUtil;
-  late Future<List<Pret>> _pretFuture;
+  late supabaseProvider _supabaseProvider;
+  late Future<List<Pret?>?> _pretFuture;
+  late SupabaseService _supabaseService;
 
   @override
   void initState() {
     super.initState();
     final pretProvider = Provider.of<supabaseProvider>(context, listen: false);
-    _pretFuture = pretProvider.fetchPrets();
+    _pretFuture = pretProvider.fetchEmprunts();
     screenUtil = ScreenUtil(context);
+    _supabaseService = SupabaseService();
+    _supabaseProvider = Provider.of<supabaseProvider>(context, listen: false);
   }
 
   @override
@@ -58,9 +63,9 @@ class _MesEmprunts extends State<MesEmprunts> {
             ),
           ),
           Expanded(
-            child: FutureBuilder<List<Pret>?>(
+            child: FutureBuilder<List<Pret?>?>(
               future: _pretFuture,
-              builder: (BuildContext context, AsyncSnapshot<List<Pret>?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<List<Pret?>?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SizedBox(
                     width: 200,  // Adjust the width as needed
@@ -77,7 +82,7 @@ class _MesEmprunts extends State<MesEmprunts> {
                   } else {
                     if (snapshot.data == null || snapshot.data!.isEmpty) {
                       return const Center(
-                        child: Text('Ancun emprunts effectués'),
+                        child: Text('Ancun emprunt effectué'),
                       );
                     } else {
                       return ListView.builder(
@@ -85,12 +90,13 @@ class _MesEmprunts extends State<MesEmprunts> {
                         itemBuilder: (BuildContext context, int index) {
                           return Card(
                             child: ListTile(
-                                title: Text(snapshot.data![index].objet.toString()),
-                                subtitle: snapshot.data![index].enCours ? Text("En cours") : Text("Terminé"),
+                                title: Text(snapshot.data![index]!.objet.toString()),
+                                subtitle: snapshot.data![index]!.enCours ? Text("En cours") : Text("Terminé"),
                                 trailing: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    await _supabaseService.arretePret(snapshot.data![index]!.id);
                                     setState(() {
-
+                                      _pretFuture = _supabaseProvider.fetchPrets(); // Fetch the updated data
                                     });
                                   },
                                   child: Text("Marquer l'emprunt comme terminé", style: TextStyle(fontSize: screenUtil.responsiveFontSizeVeryLong())),

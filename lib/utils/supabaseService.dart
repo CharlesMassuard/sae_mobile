@@ -164,4 +164,32 @@ class SupabaseService {
       }
     }
   }
+
+  Future<void> arretePret(int idPret) async{
+    try {
+      final response = await client.from('Pret').update({'enCours': false}).eq('id', idPret);
+      final response2 = await client.from('Pret').select('Annonces: idAnnPret (*), Objets: idObjPret (*)').eq('id', idPret).single();
+      final annonce = response2['Annonces'];
+      final objet = response2['Objets'];
+      final response3 = await client.from('Annonces').update({'statusAnn': 'ended'}).eq('idAnn', annonce['idAnn']);
+      final response4 = await client.from('Objets').update({'lent': false}).eq('idObjet', objet['idObjet']);
+      final response5 = await client.from('AvisObjet').insert({
+        'idObjetReview': objet['idObjet'],
+        'userWriter': annonce['username'],
+        'done': false,
+      });
+      final response6 = await client.from('AvisUtilisateur').insert({
+        'userReviewed': annonce['username'],
+        'userWriter': objet['usernameOwner'],
+        'done': false,
+      });
+      final response7 = await client.from('AvisUtilisateur').insert({
+        'userReviewed': objet['usernameOwner'],
+        'userWriter': annonce['username'],
+        'done': false,
+      });
+    } catch (e) {
+      throw Exception('An error occurred while updating pret: $e');
+    }
+  }
 }

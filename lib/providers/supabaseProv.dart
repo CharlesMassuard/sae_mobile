@@ -95,7 +95,7 @@ class supabaseProvider with ChangeNotifier {
     }
   }
 
-  Future<List<Pret>> fetchPrets() async {
+  Future<List<Pret?>?> fetchEmprunts() async {
     try {
       final username = await _supabaseService.getUsernameFromEmail();
       if (username == null) {
@@ -103,11 +103,19 @@ class supabaseProvider with ChangeNotifier {
       }
       final res = await _supabaseService.client.from('Pret')
           .select('id, Annonces: idAnnPret (*), Objets: idObjPret (*), enCours')
-          .eq('Annonces.username', username);
-
-      return res.map((item) {
+          .eq('Annonces.username', username)
+          .eq('enCours', true);
+      if(res.isEmpty) {
+        return null;
+      }
+      var prets = res.map((item) {
         final annonce = item['Annonces'];
         final objet = item['Objets'];
+
+        if (annonce == null || objet == null) {
+          return null;
+        }
+
         return Pret(
           id: item['id'],
           enCours: item['enCours'],
@@ -127,10 +135,73 @@ class supabaseProvider with ChangeNotifier {
           ),
         );
       }).toList();
+
+      // If all values are null, return null
+      if (prets.every((item) => item == null)) {
+        return null;
+      }
+
+      // Filter out null values
+      prets.removeWhere((item) => item == null);
+
+      return prets;
     } catch (e) {
       throw Exception('An error occurred while fetching prets: $e');
     }
   }
 
+  Future<List<Pret?>?> fetchPrets() async {
+    try {
+      final username = await _supabaseService.getUsernameFromEmail();
+      if (username == null) {
+        throw Exception('Vous n\'êtes pas connecté.');
+      }
+      final res = await _supabaseService.client.from('Pret')
+          .select('id, Annonces: idAnnPret (*), Objets: idObjPret (*), enCours')
+          .eq('Objets.usernameOwner', username)
+          .eq('enCours', true);
+      if(res.isEmpty) {
+        return null;
+      }
+      var prets = res.map((item) {
+        final annonce = item['Annonces'];
+        final objet = item['Objets'];
 
+        if (annonce == null || objet == null) {
+          return null;
+        }
+
+        return Pret(
+          id: item['id'],
+          enCours: item['enCours'],
+          annonce: Announcement(
+            id: annonce['idAnn'],
+            title: annonce['titreAnn'],
+            description: annonce['descAnn'],
+            username: annonce['username'],
+            status: annonce['statusAnn'],
+            date: annonce['date'],
+          ),
+          objet: Objet(
+            id: objet['idObjet'],
+            nomObjet: objet['nomObjet'],
+            descriptionObjet: objet['descriptionObjet'],
+            usernameOwner: objet['usernameOwner'],
+          ),
+        );
+      }).toList();
+
+      // If all values are null, return null
+      if (prets.every((item) => item == null)) {
+        return null;
+      }
+
+      // Filter out null values
+      prets.removeWhere((item) => item == null);
+
+      return prets;
+    } catch (e) {
+      throw Exception('An error occurred while fetching prets: $e');
+    }
+  }
 }
