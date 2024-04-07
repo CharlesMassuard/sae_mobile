@@ -127,4 +127,37 @@ class SupabaseService {
       }
     }
   }
+
+  Future<void> refuseObjet(int idObjet, int idAnnonce) async {
+    try {
+      final response = await client.from('ReponseAnnonce').delete().eq('idObjetRep', idObjet).eq('idAnnRep', idAnnonce);
+    } catch (e) {
+      if (e is NoSuchMethodError) {
+        throw Exception('A method was called on a null object: $e');
+      } else {
+        throw Exception('An unknown error occurred: $e');
+      }
+    }
+  }
+
+  Future<void> acceptObjet(int idObjet, int idAnnonce) async {
+    try {
+      final response = await client.from('Objets').update({'lent': true}).eq('idObjet', idObjet);
+      final response2 = await client.from('Annonces').update({'statusAnn': 'accepted'}).eq('idAnn', idAnnonce);
+      final response3 = await client.from('ReponseAnnonce').delete().eq('idAnnRep', idAnnonce);
+      final response4 = await client.from('Pret').insert(
+        {
+          'idObjPret': idObjet,
+          'idAnnPret': idAnnonce,
+          'enCours': true,
+        },
+      );
+    } catch (e) {
+      if (e is NoSuchMethodError) {
+        throw Exception('A method was called on a null object: $e');
+      } else {
+        throw Exception('An unknown error occurred: $e');
+      }
+    }
+  }
 }
