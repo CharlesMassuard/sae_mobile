@@ -19,6 +19,9 @@ Pour cette SAE, nous avons du réaliser une application en flutter. Cette applic
 - L'utilisateur peut voir ses prets et ses emprunts en cours.
 - L'utilisateur peut voir les objets qu'il a importé dans son profil.
 - L'utilisateur peut ajouter un objet à son profil (titre, description), et le supprimer.
+- Le demandeur et le preteur peuvent noter le prêt comme étant terminé.
+- Le demandeur peut donner un avis sur l'objet qu'il a emprunté, et/ou sur l'utilisateur qui lui a prété l'objet.
+- Le preteur peut donner un avis sur l'utilisateur qui lui a emprunté l'objet.
 
 ## Technologies utilisées
 
