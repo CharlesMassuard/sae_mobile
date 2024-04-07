@@ -66,6 +66,7 @@ class SupabaseService {
         'descriptionObjet': description,
         'usernameOwner': username,
         'idObjetBDLocal': idBDLocale,
+        'lent': false,
       }).select('idObjet');
       if (response.isNotEmpty) {
         return response[0]['idObjet'];
