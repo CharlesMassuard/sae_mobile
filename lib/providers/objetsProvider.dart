@@ -16,4 +16,14 @@ class MesObjetsProvider {
       );
     });
   }
+
+  List<String> getMesObjetsList() {
+    final List<String> objets = [];
+    getMesObjets().then((value) {
+      for (var objet in value!) {
+        objets.add(objet.toString());
+      }
+    });
+    return objets;
+  }
 }
