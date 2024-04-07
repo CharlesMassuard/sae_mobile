@@ -59,8 +59,12 @@ class SupabaseService {
         'nomObjet': nom,
         'descriptionObjet': description,
         'usernameOwner': username,
-      });
-      return response.data![0]['idObjet'];
+      }).select('idObjet');
+      if (response.isNotEmpty) {
+        return response[0]['idObjet'];
+      } else {
+        throw Exception('Failed to insert object: no rows returned');
+      }
     }
     catch (e) {
       if (e is NoSuchMethodError) {
