@@ -34,3 +34,6 @@ La base de données locale est réalisée avec **sqflite** : les objets de l'uti
 La base de données distante est réalisée avec **Supabase**.
 <br>
 Afin de naviguer au sein de l'application, nous avons utilisé **GoRouter**.
+
+## Rendu vidéo
+Disponible sur youtube au lien suivant: https://youtu.be/yT6lzXRmnvM
