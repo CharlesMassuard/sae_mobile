@@ -3,6 +3,7 @@ import 'package:sae_mobile/utils/supabaseService.dart';
 
 import '../models/objets.dart';
 import '../models/annoncesModel.dart';
+import '../models/pret.dart';
 
 class supabaseProvider with ChangeNotifier {
   List<Announcement> _announcements = [];
@@ -93,4 +94,43 @@ class supabaseProvider with ChangeNotifier {
       throw Exception('An error occurred while fetching object: $e');
     }
   }
+
+  Future<List<Pret>> fetchPrets() async {
+    try {
+      final username = await _supabaseService.getUsernameFromEmail();
+      if (username == null) {
+        throw Exception('Vous n\'êtes pas connecté.');
+      }
+      final res = await _supabaseService.client.from('Pret')
+          .select('id, Annonce: idAnnPret (*), Objet: idObjPret (*), enCours')
+          .eq('idAnnPret(username)', username);
+
+      return res.map((item) {
+        final annonce = item['Annonce'];
+        final objet = item['Objet'];
+        return Pret(
+          id: item['id'],
+          enCours: item['enCours'],
+          annonce: Announcement(
+            id: annonce['idAnn'],
+            title: annonce['titreAnn'],
+            description: annonce['descAnn'],
+            username: annonce['username'],
+            status: annonce['statusAnn'],
+            date: annonce['date'],
+          ),
+          objet: Objet(
+            id: objet['idObjet'],
+            nomObjet: objet['nomObjet'],
+            descriptionObjet: objet['descriptionObjet'],
+            usernameOwner: objet['usernameOwner'],
+          ),
+        );
+      }).toList();
+    } catch (e) {
+      throw Exception('An error occurred while fetching prets: $e');
+    }
+  }
+
+
 }
