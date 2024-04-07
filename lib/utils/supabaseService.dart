@@ -27,7 +27,7 @@ class SupabaseService {
     });
   }
 
-  Future<void> insertAnnouncement(String title, String description) async {
+  Future<void> insertAnnouncement(String title, String description, String date) async {
     try {
       final userMail = client.auth.currentUser?.email;
       if (userMail == null) {
@@ -38,6 +38,8 @@ class SupabaseService {
         'titreAnn': title,
         'descAnn': description,
         'username': username,
+        'statusAnn': 'posted',
+        'date': date,
       });
     } catch (e) {
       if (e is NoSuchMethodError) {

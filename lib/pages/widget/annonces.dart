@@ -77,7 +77,12 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                         );
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
-                      } else {
+                      } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                        return const Center(
+                          child: Text('Ajouter un objet!'),
+                        );
+                      }
+                      else {
                         return ListView.builder(
                           itemCount: snapshot.data?.length ?? 0,
                           itemBuilder: (context, index) {
@@ -90,6 +95,7 @@ class WidgetAnnoncesState extends State<WidgetAnnonces> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(announcement.description),
+                                    Text('Date : ${announcement.date}', style: TextStyle(fontStyle: FontStyle.italic)), // Display the date of the announcement
                                     Text('Auteur : ${announcement.username}', style: TextStyle(fontStyle: FontStyle.italic)), // Display the name of the owner
                                   ],
                                 ),

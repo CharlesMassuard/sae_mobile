@@ -14,13 +14,14 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _description = '';
+  String _date = '';
   final SupabaseService _supabaseService = SupabaseService();
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        await _supabaseService.insertAnnouncement(_title, _description);
+        await _supabaseService.insertAnnouncement(_title, _description, _date);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Annonce publiée avec succès!')),
         );
@@ -71,6 +72,21 @@ class _NouvelleAnnonceState extends State<NouvelleAnnonce> {
                 },
                 onSaved: (value) {
                   _description = value!;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Date',
+                  suffixIcon: InfoButton(infoText: 'Entrez la date à laquelle vous souhaitez emprunter l\'objet, il est recommander de donner une date précise de début et de fin.'),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veillez entrer une date d\'emprunt';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _date = value!;
                 },
               ),
               const SizedBox(height: 20),

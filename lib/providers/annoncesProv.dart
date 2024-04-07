@@ -6,8 +6,10 @@ class Announcement {
   final String title;
   final String description;
   final String username;
+  final String status;
+  final String date;
 
-  Announcement({required this.title, required this.description, required this.username, required this.id});
+  Announcement({required this.title, required this.description, required this.username, required this.id, required this.status, required this.date});
 }
 
 class AnnouncementProvider with ChangeNotifier {
@@ -20,13 +22,15 @@ class AnnouncementProvider with ChangeNotifier {
 
   Future<List<Announcement>> fetchAnnouncements() async {
     try {
-      final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username').order('idAnn', ascending: false);
+      final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username, statusAnn, date').order('idAnn', ascending: false);
       _announcements = res.map((item) {
         return Announcement(
           id: item['idAnn'],
           title: item['titreAnn'],
           description: item['descAnn'],
           username: item['username'],
+          status: item['statusAnn'],
+          date: item['date'],
         );
       }).toList();
       notifyListeners();
@@ -38,12 +42,14 @@ class AnnouncementProvider with ChangeNotifier {
 
   Future<Announcement> fetchAnnouncement(int id) async {
     try {
-      final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username').eq('idAnn', id).single();
+      final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username, statusAnn, date').eq('idAnn', id).single();
       return Announcement(
         id: res['idAnn'],
         title: res['titreAnn'],
         description: res['descAnn'],
         username: res['username'],
+        status: res['statusAnn'],
+        date: res['date'],
       );
     } catch (e) {
       throw Exception('An error occurred while fetching announcement: $e');
