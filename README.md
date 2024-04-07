@@ -23,6 +23,7 @@ Pour cette SAE, nous avons du réaliser une application en flutter. Cette applic
 - Le demandeur et le preteur peuvent noter le prêt comme étant terminé.
 - Le demandeur peut donner un avis sur l'objet qu'il a emprunté, et/ou sur l'utilisateur qui lui a prété l'objet.
 - Le preteur peut donner un avis sur l'utilisateur qui lui a emprunté l'objet.
+- L'utilisateur peut fermer son annonce.
 
 ## Technologies utilisées
 
