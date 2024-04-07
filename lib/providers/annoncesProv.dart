@@ -55,4 +55,29 @@ class AnnouncementProvider with ChangeNotifier {
       throw Exception('An error occurred while fetching announcement: $e');
     }
   }
+
+  Future<List<Announcement>> fetchMyAnnouncements() async {
+    try {
+      final username = await _supabaseService.getUsernameFromEmail();
+      if (username == null) {
+        throw Exception('Vous n\'êtes pas connecté.');
+      }
+      final res = await _supabaseService.client.from('Annonces').select('idAnn, titreAnn, descAnn, username, statusAnn, date').eq('username', username).or('statusAnn.eq.posted,statusAnn.eq.answered').order('idAnn', ascending: false);
+      _announcements = res.map((item) {
+        return Announcement(
+          id: item['idAnn'],
+          title: item['titreAnn'],
+          description: item['descAnn'],
+          username: item['username'],
+          status: item['statusAnn'],
+          date: item['date'],
+        );
+      }).toList();
+      notifyListeners();
+      print (_announcements);
+      return _announcements;
+    } catch (e) {
+      throw Exception('An error occurred while fetching announcements: $e');
+    }
+  }
 }
