@@ -27,8 +27,7 @@ Pour cette SAE, nous avons du réaliser une application en flutter. Cette applic
 
 Afin de réaliser cette SAÉ, nous avons utilisé Flutter.
 <br>
-La base de données locale est réalisée avec **sqflite** :
-    - Les objets de l'utilisateur sont stockés localement.
+La base de données locale est réalisée avec **sqflite** : les objets de l'utilisateur sont stockés localement.
 <br>
 La base de données distante est réalisée avec **Supabase**.
 <br>
