@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:sae_mobile/utils/supabaseService.dart';
 
+import '../models/avis.dart';
 import '../models/objets.dart';
 import '../models/annoncesModel.dart';
 import '../models/pret.dart';
@@ -202,6 +203,44 @@ class supabaseProvider with ChangeNotifier {
       return prets;
     } catch (e) {
       throw Exception('An error occurred while fetching prets: $e');
+    }
+  }
+
+  Future<AvisPersonne?> fetchAvisPersonne(String username) async {
+    try {
+      final res = await _supabaseService.client.from('AvisPersonne')
+          .select('idAvis, userWriter, userReviewed, done, avis')
+          .eq('userReviewed', username);
+      if(res.isEmpty) {
+        return null;
+      }
+      return AvisPersonne(
+        id: res[0]['id'],
+        userWriter: res[0]['userWriter'],
+        userReviewed: res[0]['userReviewed'],
+        done: res[0]['done'],
+        avis: res[0]['avis'],
+      );
+    } catch (e) {
+      throw Exception('An error occurred while fetching avis: $e');
+    }
+  }
+
+  Future<AvisObjet> fetchAvisObjet(String username) async {
+    try{
+      final res = await _supabaseService.client.from('AvisObjet')
+          .select('idAvis, Objets: idObjetReview (*), userWriter, done, avis')
+          .eq('Objets.usernameOwner', username);
+      return AvisObjet(
+        id: res[0]['id'],
+        idObjetReview: res[0]['idObjetReview'],
+        nomObjet: res[0]['nomObjet'],
+        userWriter: res[0]['userWriter'],
+        done: res[0]['done'],
+        avis: res[0]['avis'],
+      );
+    } catch (e) {
+      throw Exception('An error occurred while fetching avis: $e');
     }
   }
 }
